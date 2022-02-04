@@ -4,8 +4,12 @@ const { Mongoose } = require('mongoose');
 const passport = require('passport');
 const User = require('../models/User.models');
 
+router.get('/user-profile', (req, res) => {
+  res.render('users/user-profile', { user: req.user });
+});
+
 router.get('/login', (req, res) => {
-  res.render('auth/login');
+  res.render('auth/login', { message: req.flash() });
 });
 
 router.post(
@@ -34,6 +38,11 @@ router.post('/signup', async (req, res) => {
       error: 'That username is already in use',
     });
   }
+});
+
+router.get('/logout', (req, res) => {
+  req.logOut();
+  res.render('/login');
 });
 
 module.exports = router;
