@@ -1,5 +1,9 @@
 const express = require('express');
+const connectDB = require('./db/index');
 const app = express();
+
+// connect to MongoDB
+connectDB();
 
 //middleware config
 require('./config/index')(app);
