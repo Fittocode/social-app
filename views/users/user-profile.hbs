@@ -4,6 +4,7 @@
 {{#each user.posts}}
     <h3>{{this.title}}</h3>
     <p>{{this.content}}</p>
+    <a href="/{{this._id}}/update">Update</a>
 {{/each}}
 <a href="/{{user._id}}/add-post">Add Post</a>
 {{else }}
