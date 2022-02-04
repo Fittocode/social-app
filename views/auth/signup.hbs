@@ -6,4 +6,9 @@
     <label for="password" name="password">Password:</label>
     <input type="password" name="password">
     <button type="submit">Sign up</button>
+    <div>
+    {{#if error}}
+        {{error}}
+    {{/if}}
+    </div>
 </form>
