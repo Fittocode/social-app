@@ -8,6 +8,9 @@ require('./config/index')(app);
 const index = require('./routes/index.routes');
 app.use('/', index);
 
+const auth = require('./routes/auth.routes');
+app.use('/', auth);
+
 // local host 3000 listening
 app.listen(3000, () => {
   console.log('listening...');
