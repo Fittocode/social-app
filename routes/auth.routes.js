@@ -3,8 +3,9 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const User = require('../models/User.models');
 
-router.get('/user-profile', (req, res) => {
-  res.render('users/user-profile', { user: req.user });
+router.get('/user-profile', async (req, res) => {
+  const user = await req.user.populate('posts');
+  res.render('users/user-profile', { user: user });
 });
 
 router.get('/login', (req, res) => {
@@ -41,7 +42,7 @@ router.post('/signup', async (req, res) => {
 
 router.get('/logout', (req, res) => {
   req.logOut();
-  res.render('/login');
+  res.redirect('/login');
 });
 
 module.exports = router;

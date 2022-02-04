@@ -1,7 +1,11 @@
 
 {{#if user}}
 <h2>Welcome, {{user.username}}!</h2>
-<a href="/logout">Log Out</a>
+{{#each user.posts}}
+    <h3>{{this.title}}</h3>
+    <p>{{this.content}}</p>
+{{/each}}
+<a href="/{{user._id}}/add-post">Add Post</a>
 {{else }}
 <p>Sorry, you must be logged in to view your profile!</p>
 {{/if}}

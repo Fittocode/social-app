@@ -16,6 +16,11 @@ app.use('/', index);
 const auth = require('./routes/auth.routes');
 app.use('/', auth);
 
+const posts = require('./routes/posts.routes');
+app.use('/', posts);
+
+require('./error-handling')(app);
+
 // local host 3000 listening
 app.listen(3000, () => {
   console.log('listening...');
