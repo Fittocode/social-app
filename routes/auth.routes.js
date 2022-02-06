@@ -3,8 +3,9 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const User = require('../models/User.models');
 
-router.get('/user-profile', ensureAuthenticated, async (req, res) => {
-  const user = await User.findOne({ slug: req.params.slug }).populate('posts');
+router.get('/user-profile/:username', ensureAuthenticated, async (req, res) => {
+  const { username } = req.params;
+  const user = await User.findOne().populate('posts');
   res.render('users/user-profile', { user: user });
 });
 
@@ -15,7 +16,7 @@ router.get('/login', (req, res) => {
 router.post(
   '/login',
   passport.authenticate('local', {
-    successRedirect: `/user-profile`,
+    successRedirect: `/user-profile/:username`,
     failureRedirect: '/login',
     failureFlash: true,
   })

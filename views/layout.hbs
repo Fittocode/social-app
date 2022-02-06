@@ -10,7 +10,7 @@
     <nav>
         <a href="/">Home</a>
         {{#if user}}
-        <a href="/user-profile">Profile</a>
+        <a href="/user-profile/{{user.username}}">Profile</a>
         <a href="/logout">Log Out</a>
         {{/if}}
         {{#unless user}}
