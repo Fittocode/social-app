@@ -4,9 +4,11 @@
 {{#each user.posts}}
     <h3>{{this.title}}</h3>
     <p>{{this.content}}</p>
-    <a href="/{{this._id}}/update">Update</a>
+    <a href="/update/{{this._id}}">Update</a>
 {{/each}}
-<a href="/{{user._id}}/add-post">Add Post</a>
+<div>
+    <a href="/{{user._id}}/add-post">Add Post</a>
+</div>
 {{else }}
 <p>Sorry, you must be logged in to view your profile!</p>
 {{/if}}

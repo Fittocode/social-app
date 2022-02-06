@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
+const slugify = require('slugify');
 
 const userSchema = new Schema({
   username: {
@@ -13,6 +14,19 @@ const userSchema = new Schema({
   },
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+  slug: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+});
+
+userSchema.pre('validate', function (next) {
+  if (this.username) {
+    this.slug = slugify(this.username, { lower: true, strict: true });
+  }
+
+  next();
 });
 
 const User = model('User', userSchema);

@@ -18,13 +18,22 @@ router.post('/:userId/add-post', async (req, res) => {
   }
 });
 
-router.get(`/:postId/update`, async (req, res) => {
+router.get(`/update/:postId/`, async (req, res) => {
   const { postId } = req.params;
   try {
     const postDB = await Post.findById(postId);
-    console.log(postDB);
-    console.log(postDB.content);
     res.render('posts/update-post', { user: req.user, post: postDB });
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+router.post('/update/:postId', async (req, res) => {
+  const { postId } = req.params;
+  const { title, content } = req.body;
+  try {
+    await Post.findByIdAndUpdate(postId, { title, content });
+    res.redirect('/user-profile');
   } catch (err) {
     console.log(err.message);
   }
