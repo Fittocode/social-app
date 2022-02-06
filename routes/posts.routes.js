@@ -39,4 +39,14 @@ router.post('/update/:postId', async (req, res) => {
   }
 });
 
+router.post('/delete/:postId', async (req, res) => {
+  const { postId } = req.params;
+  try {
+    await Post.findByIdAndDelete(postId);
+    res.redirect('/user-profile');
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 module.exports = router;
