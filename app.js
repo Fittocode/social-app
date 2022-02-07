@@ -19,6 +19,9 @@ app.use('/', auth);
 const posts = require('./routes/posts.routes');
 app.use('/', posts);
 
+const users = require('./routes/users.routes');
+app.use('/', users);
+
 require('./error-handling')(app);
 
 // local host 3000 listening
