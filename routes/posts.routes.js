@@ -3,6 +3,66 @@ const Post = require('../models/Post.models');
 const Comment = require('../models/Comment.models');
 const User = require('../models/User.models');
 
+// get req add post page
+router.get('/:userId/add-post', (req, res) => {
+  res.render('posts/addPost', { userLogged: req.user });
+});
+
+// post req add post
+router.post('/:userId/add-post', async (req, res) => {
+  const { userId } = req.params;
+  const { title, content } = req.body;
+  try {
+    const userPost = await Post.create({
+      title,
+      author: req.user,
+      content,
+    });
+    await User.findByIdAndUpdate(userId, {
+      $push: { posts: userPost },
+    });
+    console.log(req.user);
+    res.redirect('/user-profile');
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+// get req update post page
+router.get(`/update/:postId/`, async (req, res) => {
+  const { postId } = req.params;
+  try {
+    const postDB = await Post.findById(postId);
+    res.render('posts/updatePost', { user: req.user, post: postDB });
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+// post req update post
+router.post('/update/:postId', async (req, res) => {
+  const { postId } = req.params;
+  const { title, content } = req.body;
+  try {
+    await Post.findByIdAndUpdate(postId, { title, content });
+    res.redirect('/user-profile');
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+// post req delete post
+router.post('/delete/:postId', async (req, res) => {
+  const { postId } = req.params;
+  try {
+    await Post.findByIdAndDelete(postId);
+    res.redirect('/user-profile');
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// get req post details, comments, etc
 router.get('/:postId', async (req, res) => {
   const { postId } = req.params;
   try {
@@ -21,7 +81,7 @@ router.get('/:postId', async (req, res) => {
   }
 });
 
-// add comment
+// post req add comment
 router.post('/:postId', ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
   const { content } = req.body;
@@ -39,11 +99,14 @@ router.post('/:postId', ensureAuthenticated, async (req, res) => {
   }
 });
 
+// post req delete comment
 router.post('/:postId/:commentId', async (req, res) => {
   const { postId, commentId } = req.params;
   try {
     const comment = await Comment.findById(commentId).populate('author');
+    console.log(comment);
     if (comment.author.username === req.user.username) {
+      console.log(req.user.username);
       await Comment.findByIdAndDelete(commentId);
       await Post.findByIdAndUpdate(postId, {
         $pullAll: {
@@ -52,62 +115,6 @@ router.post('/:postId/:commentId', async (req, res) => {
       });
       res.redirect(`/${postId}`);
     }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-router.get('/:userId/add-post', (req, res) => {
-  res.render('posts/addPost', { userLogged: req.user });
-});
-
-router.post('/:userId/add-post', async (req, res) => {
-  const { userId } = req.params;
-  console.log(userId);
-  const { title, content } = req.body;
-  try {
-    const userPost = await Post.create({
-      title,
-      author: req.user,
-      content,
-    });
-    console.log(userPost);
-    await User.findByIdAndUpdate(userId, {
-      $push: { posts: userPost },
-    });
-    console.log(req.user);
-    res.redirect('/user-profile');
-  } catch (err) {
-    console.log(err.message);
-  }
-});
-
-router.get(`/update/:postId/`, async (req, res) => {
-  const { postId } = req.params;
-  try {
-    const postDB = await Post.findById(postId);
-    res.render('posts/updatePost', { user: req.user, post: postDB });
-  } catch (err) {
-    console.log(err.message);
-  }
-});
-
-router.post('/update/:postId', async (req, res) => {
-  const { postId } = req.params;
-  const { title, content } = req.body;
-  try {
-    await Post.findByIdAndUpdate(postId, { title, content });
-    res.redirect('/user-profile');
-  } catch (err) {
-    console.log(err.message);
-  }
-});
-
-router.post('/delete/:postId', async (req, res) => {
-  const { postId } = req.params;
-  try {
-    await Post.findByIdAndDelete(postId);
-    res.redirect('/user-profile');
   } catch (err) {
     console.log(err);
   }

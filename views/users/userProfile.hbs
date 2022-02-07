@@ -5,7 +5,7 @@
     <div>
         <a href="/{{userLogged._id}}/add-post" class="btn btn-success">Add Post</a>
     </div>
-    {{#each userLogged.posts}}
+    {{#each posts}}
     <div class="card mt-4" onclick="location.href='/{{this._id}}';">
         <div class="card-body">
             <h3 class="card-title">{{this.title}}</h3>
