@@ -9,3 +9,8 @@ nav {
 .container-md {
   width: 60%;
 }
+
+.card:hover {
+  cursor: pointer;
+  background-color: rgb(249, 249, 249);
+}

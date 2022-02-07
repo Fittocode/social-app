@@ -2,6 +2,16 @@ const router = require('express').Router();
 const Post = require('../models/Post.models');
 const User = require('../models/User.models');
 
+router.get('/:postId', async (req, res) => {
+  const { postId } = req.params;
+  try {
+    const post = await Post.findById(postId);
+    res.render('posts/viewPost', { post: post });
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
 router.get('/:userId/add-post', (req, res) => {
   res.render('posts/addPost', { user: req.user });
 });

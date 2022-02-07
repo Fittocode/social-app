@@ -1,0 +1,12 @@
+<div class="container">
+<div class="card mt-4">
+    <div class="card-body">
+        <h3 class="card-title">{{post.title}}</h3>
+        <a href="/profile/{{post.author._id}}">{{post.author.username}}</a>
+        <div class="card-text mb-2">
+        <p>{{post.content}}</p>
+        <p>{{post.likes}} likes, {{post.comments.length}} <a href="/">comments</a></p>
+        </div>
+    </div>
+</div>
+</div>

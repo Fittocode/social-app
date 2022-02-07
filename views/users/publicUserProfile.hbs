@@ -1,25 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-</head>
-<body>
-    <div class="container">
-        <h1>{{profile.username}}</h1>
-        {{#each profile.posts}}
-        <div class="card mt-4">
-            <div class="card-body">
-                <h3 class="card-title">{{this.title}}</h3>
-                <div class="card-text mb-2">
-                <p>{{this.content}}</p>
-                <p>{{this.likes}} likes, {{this.comments.length}} comments</p>
-                </div>
+
+<div class="container">
+    <h1>{{profile.username}}</h1>
+    {{#each profile.posts}}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h3 class="card-title">{{this.title}}</h3>
+            <div class="card-text mb-2">
+            <p>{{this.content}}</p>
+            <p>{{this.likes}} likes, {{this.comments.length}} comments</p>
             </div>
         </div>
-        {{/each}}
     </div>
-</body>
-</html>
+    {{/each}}
+</div>
