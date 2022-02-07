@@ -6,7 +6,7 @@ router.get('/:postId', async (req, res) => {
   const { postId } = req.params;
   try {
     const post = await Post.findById(postId);
-    res.render('posts/viewPost', { post: post });
+    res.render('posts/viewPost', { userLogged: req.user, post: post });
   } catch (err) {
     console.log(err.message);
   }

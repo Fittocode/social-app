@@ -16,7 +16,7 @@ const postSchema = new Schema({
     required: 'true',
   },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
-  likes: {
+  favorited: {
     type: Number,
     default: 0,
   },

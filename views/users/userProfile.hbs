@@ -11,7 +11,7 @@
             <h3 class="card-title">{{this.title}}</h3>
             <div class="card-text mb-2">
             <p>{{this.content}}</p>
-            <p>{{this.likes}} likes, {{this.comments.length}} comments</p>
+            <p>{{this.favorited}} favorited, {{this.comments.length}} comments</p>
             </div>
             <a href="/update/{{this._id}}" class="btn btn-info">Update</a>
             <form action="/delete/{{this._id}}" method='post' class="d-inline">
