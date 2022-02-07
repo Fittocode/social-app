@@ -5,7 +5,7 @@ const User = require('../models/User.models');
 
 router.get('/user-profile', ensureAuthenticated, async (req, res) => {
   const user = await User.findOne(req.user).populate('posts');
-  res.render('users/userProfile', { user: user });
+  res.render('users/userProfile', { userLogged: user });
 });
 
 router.get('/login', (req, res) => {

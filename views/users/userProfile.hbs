@@ -9,12 +9,12 @@
 </head>
 <body>
     <div class="container">
-        {{#if user}}
-        <h1>Welcome, {{user.username}}!</h1>
+        {{#if userLogged}}
+        <h1>Welcome, {{userLogged.username}}!</h1>
         <div>
-            <a href="/{{user._id}}/add-post" class="btn btn-success">Add Post</a>
+            <a href="/{{userLogged._id}}/add-post" class="btn btn-success">Add Post</a>
         </div>
-        {{#each user.posts}}
+        {{#each userLogged.posts}}
         <div class="card mt-4">
             <div class="card-body">
                 <h3 class="card-title">{{this.title}}</h3>
