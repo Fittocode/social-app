@@ -3,7 +3,7 @@ const Post = require('../models/Post.models');
 const User = require('../models/User.models');
 
 router.get('/:userId/add-post', (req, res) => {
-  res.render('posts/add-post', { user: req.user });
+  res.render('posts/addPost', { user: req.user });
 });
 
 router.post('/:userId/add-post', async (req, res) => {
@@ -22,7 +22,7 @@ router.get(`/update/:postId/`, async (req, res) => {
   const { postId } = req.params;
   try {
     const postDB = await Post.findById(postId);
-    res.render('posts/update-post', { user: req.user, post: postDB });
+    res.render('posts/updatePost', { user: req.user, post: postDB });
   } catch (err) {
     console.log(err.message);
   }

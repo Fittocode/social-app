@@ -1,8 +1,9 @@
 const express = require('express');
+const hbs = require('hbs');
 const app = express();
 
 //middleware config
-require('./config/index')(app);
+require('./config/index')(app, hbs);
 require('./config/passport')(app);
 
 // connect to MongoDB

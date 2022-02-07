@@ -1,12 +1,12 @@
 const express = require('express');
-const hbs = require('hbs');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 
-module.exports = (app) => {
+module.exports = (app, hbs) => {
   app.set('views', path.join(__dirname, '..', 'views'));
   app.use(express.static(path.join(__dirname, '..', 'public')));
   app.set('view engine', 'hbs');
+  hbs.registerPartials(path.join(__dirname, '..', '/views/partials'));
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));

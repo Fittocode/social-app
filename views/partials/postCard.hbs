@@ -1,0 +1,10 @@
+<div class="card mt-4">
+    <div class="card-body">
+        <h3 class="card-title">{{this.title}}</h3>
+        <a href="/profile/{{this.author._id}}">{{this.author.username}}</a>
+        <div class="card-text mb-2">
+        <p>{{this.content}}</p>
+        <p>{{this.likes}} likes, {{this.comments.length}} comments</p>
+        </div>
+    </div>
+</div>
