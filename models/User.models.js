@@ -14,6 +14,7 @@ const userSchema = new Schema({
   },
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   slug: {
     type: String,
     required: true,
