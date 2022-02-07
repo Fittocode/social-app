@@ -1,14 +1,14 @@
 
 <div class="container-md">
-    <h2 class="mb-4">New Post</h2>
+    <h2>New Post</h2>
     <form action="/{{user._id}}/add-post" method="post">
         <div class="form-group">
-            <label for="title" name="title">Title:</label>
-            <input type="text" name="title" class="form-control">
+            <label for="title" name="title"></label>
+            <input type="text" name="title" placeholder="Post Title" class="form-control">
         </div>
         <div class="form-group"> 
-            <label for="content" name="content">Content:</label>
-            <textarea type="text" name="content" class="form-control"></textarea>
+            <label for="content" name="content"></label>
+            <textarea type="text" name="content" placeholder="What would you like to say?" class="form-control"></textarea>
         </div>
         <br />
         <button type="submit" class="btn btn-primary">Post</button>

@@ -1,12 +1,41 @@
 <div class="container">
-<div class="card mt-4">
-    <div class="card-body">
-        <h3 class="card-title">{{post.title}}</h3>
-        <a href="/profile/{{post.author._id}}">{{post.author.username}}</a>
-        <div class="card-text mb-2">
-        <p>{{post.content}}</p>
-        <p>{{post.favorited}} favorited, {{post.comments.length}} comments</p>
+    <div class="card mt-4">
+        <div class="card-body">
+            <h3 class="card-title">{{post.title}}</h3>
+            <div class="card-text mb-2">
+                <p><a href="/profile/{{post.author._id}}">{{post.author.username}}</a></p>
+                <p>{{post.content}}</p>
+                <p>{{post.favorited}} favorited, {{post.comments.length}} comments</p>
+            </div>
+            <p>
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Add Comment
+                </button>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <form action="/{{post._id}}" method="post">
+                <div class="form-group">
+                    <label for="content" name='content'></label>
+                    <textarea name="content" id="content" placeholder="Write a comment" class="form-control"></textarea>
+                </div>
+                <br />
+                <div class="form-group mb-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                </form>
+            </div>
+            <div class="list-group">
+                {{#each post.comments}}
+                <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{this.author.username}}</h5>
+                    <small>{{this.createdAt}}</small>
+                    </div>
+                    <p class="mb-1">{{this.content}}</p>
+                    <small></small>
+                </a>
+                  {{/each}}
+            </div>
         </div>
     </div>
-</div>
 </div>
