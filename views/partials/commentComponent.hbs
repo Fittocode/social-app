@@ -1,0 +1,12 @@
+
+<a href="#" class="list-group-item list-group-item-action" aria-current="true">
+    <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">{{this.author.username}}</h5>
+        <small>{{this.createdAt}}</small>
+    </div>
+    <p class="mb-1">{{this.content}}</p>
+    {{#if userLogged}}
+        <small class="text-muted">Edit</small>
+        <small class="text-muted">Delete</small>
+    {{/if}}
+</a>

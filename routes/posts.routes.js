@@ -2,7 +2,6 @@ const router = require('express').Router();
 const Post = require('../models/Post.models');
 const Comment = require('../models/Comment.models');
 const User = require('../models/User.models');
-require('../routes/auth.routes');
 
 router.get('/:postId', async (req, res) => {
   const { postId } = req.params;
@@ -22,6 +21,7 @@ router.get('/:postId', async (req, res) => {
   }
 });
 
+// add comment
 router.post('/:postId', ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
   const { content } = req.body;
@@ -33,27 +33,52 @@ router.post('/:postId', ensureAuthenticated, async (req, res) => {
     await Post.findByIdAndUpdate(postId, {
       $push: { comments: comment },
     });
-    console.log(comment);
     res.redirect(`/${postId}`);
   } catch (err) {
     console.log(err.message);
   }
 });
 
+router.post('/:postId/:commentId', async (req, res) => {
+  const { postId, commentId } = req.params;
+  try {
+    const comment = await Comment.findById(commentId).populate('author');
+    if (comment.author.username === req.user.username) {
+      await Comment.findByIdAndDelete(commentId);
+      await Post.findByIdAndUpdate(postId, {
+        $pullAll: {
+          comments: [{ _id: commentId }],
+        },
+      });
+      res.redirect(`/${postId}`);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 router.get('/:userId/add-post', (req, res) => {
-  res.render('posts/addPost', { user: req.user });
+  res.render('posts/addPost', { userLogged: req.user });
 });
 
 router.post('/:userId/add-post', async (req, res) => {
   const { userId } = req.params;
+  console.log(userId);
   const { title, content } = req.body;
   try {
-    const userPost = await Post.create({ title, author: req.user, content });
-    await User.findByIdAndUpdate(userId, { $push: { posts: userPost } });
+    const userPost = await Post.create({
+      title,
+      author: req.user,
+      content,
+    });
     console.log(userPost);
+    await User.findByIdAndUpdate(userId, {
+      $push: { posts: userPost },
+    });
+    console.log(req.user);
     res.redirect('/user-profile');
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
   }
 });
 

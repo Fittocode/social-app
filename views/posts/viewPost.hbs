@@ -26,15 +26,22 @@
             </div>
             <div class="list-group">
                 {{#each post.comments}}
-                <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                    <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{this.author.username}}</h5>
-                    <small>{{this.createdAt}}</small>
-                    </div>
-                    <p class="mb-1">{{this.content}}</p>
-                    <small></small>
-                </a>
-                  {{/each}}
+                    <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{this.author.username}}</h5>
+                            <small>{{this.createdAt}}</small>
+                        </div>
+                        <p class="mb-1">{{this.content}}</p>
+                        {{#if ../userLogged}}
+                            {{!-- <form action="" method="post">
+                                <button type="submit" class="btn btn-link">Edit</button>
+                            </form> --}}
+                            <form action="/{{../post._id}}/{{this._id}}" method="post">
+                                <button type="submit" class="btn btn-link">Delete</button>
+                            </form>
+                        {{/if}}
+                    </a>
+                {{/each}}
             </div>
         </div>
     </div>
