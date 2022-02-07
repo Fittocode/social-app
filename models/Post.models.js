@@ -16,6 +16,10 @@ const postSchema = new Schema({
     required: 'true',
   },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+  likes: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const Post = model('Post', postSchema);
