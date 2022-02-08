@@ -2,15 +2,28 @@
     <div class="card mt-4">
         <div class="card-body">
             <h3 class="card-title">{{post.title}}</h3>
+                <p>By <a href="/profile/{{post.author._id}}">{{post.author.username}}</a></p>
             <div class="card-text mb-2">
-                <p><a href="/profile/{{post.author._id}}">{{post.author.username}}</a></p>
                 <p>{{post.content}}</p>
-                <p>{{post.favorited}} favorited, {{post.comments.length}} comments</p>
+                <p>{{post.likes.length}} likes, {{post.comments.length}} comments</p>
             </div>
             <p>
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    Add Comment
-                </button>
+                <div class="button-container">
+                    <div class="row">
+                        <div class="col-2">
+                            <form action="/{{post._id}}" method="post">
+                                <button class="btn btn-primary" type="submit">
+                                    like
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                Add Comment
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </p>
             <div class="collapse" id="collapseExample">
                 <form action="/{{post._id}}" method="post">

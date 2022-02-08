@@ -18,3 +18,7 @@ nav {
 a {
   text-decoration: none;
 }
+
+.button-container {
+  width: 300px;
+}

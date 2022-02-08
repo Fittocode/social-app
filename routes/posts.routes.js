@@ -81,6 +81,23 @@ router.get('/:postId', async (req, res) => {
   }
 });
 
+// add like
+router.post('/:postId', async (req, res) => {
+  const { postId } = req.params;
+  try {
+    const post = await Post.findById(postId).populate('likes');
+    if (post.likes.find((o) => o.username === req.user.username)) {
+      res.redirect(`/${postId}`);
+      return;
+    } else {
+      await Post.findByIdAndUpdate(postId, { $push: { likes: req.user } });
+    }
+    res.redirect(`/${postId}`);
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
 // post req add comment
 router.post('/:postId', ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
@@ -106,7 +123,7 @@ router.post('/:postId/:commentId', async (req, res) => {
     const comment = await Comment.findById(commentId).populate('author');
     console.log(comment);
     if (comment.author.username === req.user.username) {
-      console.log(req.user.username);
+      console.log(req.user);
       await Comment.findByIdAndDelete(commentId);
       await Post.findByIdAndUpdate(postId, {
         $pullAll: {
