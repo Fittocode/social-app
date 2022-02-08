@@ -26,3 +26,15 @@ a {
 .col-2 {
   margin-right: 0.5rem;
 }
+
+.btn-info {
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+  color: white;
+}
+
+.btn-info:hover {
+  background-color: #108698;
+  border-color: #108698;
+  color: white;
+}
