@@ -13,6 +13,10 @@ router.get('/login', (req, res) => {
   res.render('auth/login', { message: req.flash() });
 });
 
+router.get('/please-login', (req, res) => {
+  res.render('auth/loginRedirect', { message: req.flash() });
+});
+
 router.post(
   '/login',
   passport.authenticate('local', {

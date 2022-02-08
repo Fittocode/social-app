@@ -22,3 +22,7 @@ a {
 .button-container {
   width: 300px;
 }
+
+.col-2 {
+  margin-right: 0.5rem;
+}

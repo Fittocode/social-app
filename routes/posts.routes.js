@@ -82,15 +82,20 @@ router.get('/:postId', async (req, res) => {
 });
 
 // add like
-router.post('/:postId', async (req, res) => {
+router.post('/:postId/like', ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
   try {
     const post = await Post.findById(postId).populate('likes');
     if (post.likes.find((o) => o.username === req.user.username)) {
-      res.redirect(`/${postId}`);
-      return;
+      await Post.findByIdAndUpdate(postId, {
+        $pullAll: {
+          likes: [{ _id: req.user._id }],
+        },
+      });
     } else {
-      await Post.findByIdAndUpdate(postId, { $push: { likes: req.user } });
+      await Post.findByIdAndUpdate(postId, {
+        $push: { likes: req.user },
+      });
     }
     res.redirect(`/${postId}`);
   } catch (err) {
@@ -99,7 +104,7 @@ router.post('/:postId', async (req, res) => {
 });
 
 // post req add comment
-router.post('/:postId', ensureAuthenticated, async (req, res) => {
+router.post('/:postId/comment', ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
   const { content } = req.body;
   try {
@@ -121,9 +126,7 @@ router.post('/:postId/:commentId', async (req, res) => {
   const { postId, commentId } = req.params;
   try {
     const comment = await Comment.findById(commentId).populate('author');
-    console.log(comment);
     if (comment.author.username === req.user.username) {
-      console.log(req.user);
       await Comment.findByIdAndDelete(commentId);
       await Post.findByIdAndUpdate(postId, {
         $pullAll: {
@@ -141,7 +144,7 @@ function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   } else {
-    res.redirect('/login');
+    res.redirect('/please-login');
   }
 }
 
