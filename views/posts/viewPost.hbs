@@ -10,11 +10,23 @@
             <p>
                 <div class="button-container">
                     <div class="row">
+                        {{#if status}}
+                        <div class="col-3">
+                        {{/if}}
+                        {{#unless status}}
                         <div class="col-2">
+                        {{/unless}}
                             <form action="/{{post._id}}/like" method="post">
-                                <button class="btn btn-success" type="submit">
-                                    Like
-                                </button>
+                                    {{#if status}}
+                                    <button class="btn btn-success unlike-btn" type="submit">
+                                        Unlike
+                                    </button>
+                                    {{/if}}
+                                    {{#unless status}}
+                                    <button class="btn btn-success like-btn" type="submit">
+                                        Like
+                                    </button>
+                                    {{/unless}}
                             </form>
                         </div>
                         <div class="col-8">

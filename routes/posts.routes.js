@@ -67,7 +67,7 @@ router.get('/:postId', async (req, res) => {
   const { postId } = req.params;
   try {
     const post = await Post.findById(postId)
-      .populate('author comments')
+      .populate('author likes comments')
       .populate({
         path: 'comments',
         populate: {
@@ -75,7 +75,14 @@ router.get('/:postId', async (req, res) => {
           model: 'User',
         },
       });
-    res.render('posts/viewPost', { userLogged: req.user, post: post });
+    let liked = post.likes.find((o) => o.username === req.user.username)
+      ? true
+      : false;
+    res.render('posts/viewPost', {
+      userLogged: req.user,
+      post: post,
+      status: liked,
+    });
   } catch (err) {
     console.log(err.message);
   }
@@ -92,10 +99,12 @@ router.post('/:postId/like', ensureAuthenticated, async (req, res) => {
           likes: [{ _id: req.user._id }],
         },
       });
+      liked = false;
     } else {
       await Post.findByIdAndUpdate(postId, {
         $push: { likes: req.user },
       });
+      liked = true;
     }
     res.redirect(`/${postId}`);
   } catch (err) {
