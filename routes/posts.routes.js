@@ -12,6 +12,7 @@ router.get('/:userId/add-post', (req, res) => {
 router.post('/:userId/add-post', async (req, res) => {
   const { userId } = req.params;
   const { title, content } = req.body;
+
   try {
     const userPost = await Post.create({
       title,
@@ -88,7 +89,7 @@ router.get('/:postId', async (req, res) => {
   }
 });
 
-// add like
+// post req add like
 router.post('/:postId/like', ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
   try {
