@@ -2,13 +2,38 @@
 <div class="container">
     {{#if userLogged}}
     <h1>Welcome, {{userLogged.username}}!</h1>
-    <div>
-        <a href="/user-profile" class="btn btn-primary">Friends List</a>
+    <br />
+    <div class="button-container">
+    <div class="row">
+    <div class="col-5">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalLong">
+    Friend List
+    </button>
+
+    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Friends list</h5>
+        </div>
+        <div class="modal-body">
+            {{#each userLogged.friends}}
+            <a href="/profile/{{this._id}}">{{this.username}}</a>
+            {{/each}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+        </div>
     </div>
-    <h4>Friends: {{userLogged.friends.length}}</h4>
-    <div>
+    </div>
+    </div>
+    <div class="col-6">
         <a href="/{{userLogged._id}}/add-post" class="btn btn-success">Add Post</a>
     </div>
+    </div>
+     </div>
     {{#each posts}}
     <div class="card mt-4" onclick="location.href='/{{this._id}}';">
         <div class="card-body">
