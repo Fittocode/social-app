@@ -76,6 +76,7 @@ router.get('/:postId', async (req, res) => {
           model: 'User',
         },
       });
+    console.log(post);
     let liked = post.likes.find((o) => o.username === req.user.username)
       ? true
       : false;

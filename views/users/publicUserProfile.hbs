@@ -1,7 +1,9 @@
 
 <div class="container">
     <h1>{{profile.username}}</h1>
-    <button class="btn btn-primary">Add Friend</button>
+    <form action="/profile/{{profile._id}}/add-friend" method="post">
+        <button class="btn btn-primary" type="submit">Add Friend</button>
+    </form>
     {{#each posts}}
     <div class="card mt-4" onclick="location.href='/{{this._id}}';">
         <div class="card-body">

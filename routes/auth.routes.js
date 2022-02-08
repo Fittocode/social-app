@@ -4,7 +4,8 @@ const passport = require('passport');
 const User = require('../models/User.models');
 
 router.get('/user-profile', ensureAuthenticated, async (req, res) => {
-  const user = await User.findOne(req.user).populate('posts');
+  const user = await User.findOne(req.user).populate('posts friends');
+  console.log(user.friends);
   const posts = await user.posts.reverse();
   res.render('users/userProfile', { userLogged: user, posts: posts });
 });

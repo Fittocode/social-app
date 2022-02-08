@@ -3,6 +3,10 @@
     {{#if userLogged}}
     <h1>Welcome, {{userLogged.username}}!</h1>
     <div>
+        <a href="/user-profile" class="btn btn-primary">Friends List</a>
+    </div>
+    <h4>Friends: {{userLogged.friends.length}}</h4>
+    <div>
         <a href="/{{userLogged._id}}/add-post" class="btn btn-success">Add Post</a>
     </div>
     {{#each posts}}

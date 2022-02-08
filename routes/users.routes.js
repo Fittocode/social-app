@@ -16,4 +16,16 @@ router.get('/profile/:userId', async (req, res) => {
   }
 });
 
+// post req add friend
+
+router.post('/profile/:userId/add-friend', async (req, res) => {
+  const { userId } = req.params;
+  try {
+    await User.findByIdAndUpdate(req.user._id, { $push: { friends: userId } });
+    res.redirect('/user-profile');
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
 module.exports = router;

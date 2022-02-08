@@ -1,6 +1,26 @@
 
 <div class="container">
     <h2>All Posts</h2>
+    {{#unless posts}}
+    <div class="alert alert-warning" role="alert">
+        Make some friends to see their posts!
+    </div>
+    <p>
+        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            User list
+        </a>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            <p>Perhaps you know someone from the list of current users...</p>
+            <ul>
+                {{#each otherUsers}}
+                <a href="/profile/{{this._id}}"><li>{{this.username}}</li></a>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    {{/unless}}
     {{#each posts}}
         {{> postCard }}
     {{/each}}
