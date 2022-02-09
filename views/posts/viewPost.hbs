@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container-md">
     <div class="card mt-4">
-        <div class="card-body">
+        <div class="card-body" style="padding-bottom: 0px">
             <h3 class="card-title">{{post.title}}</h3>
                 <p>By <a href="/profile/{{post.author._id}}">{{post.author.username}}</a></p>
             <div class="card-text mb-2">
@@ -27,24 +27,16 @@
                             </form>
                             </div>
                         <div class="col-8 g-0">
-                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                Add Comment
-                            </button>
                         </div>
                     </div>
                 </div>
             </div>
             </p>
-            {{#if liked}}
-                <div class="alert alert-primary" role="alert">
-                    This is a primary alert—check it out!
-                </div>
-            {{/if}}
-            <div class="collapse" id="collapseExample">
+            <div class="collapse.show" id="collapseExample">
                 <form action="/{{post._id}}/comment" method="post" class="form-padding">
-                    <div class="form-group">
+                    <div class="form-group comment-box">
                         <label for="content" name='content'></label>
-                        <textarea name="content" id="content" placeholder="Write a comment" class="form-control"></textarea>
+                        <textarea name="content" id="content" placeholder="Write a comment..." class="form-control"></textarea>
                     </div>
                     <br />
                     <div class="form-group mb-3">
@@ -54,21 +46,20 @@
             </div>
             <div class="list-group">
                 {{#each post.comments}}
-                    <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                <div class="list-group grey-comment-box">
                         <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">{{this.author.username}}</h5>
-                            <small>{{this.createdAt}}</small>
-                        </div>
-                        <p class="mb-1">{{this.content}}</p>
-                        {{#if ../userLogged}}
+                            <a href="/profile/{{this.author._id}}" class="comment-name"><p class="mb-1 comment-name">{{this.author.username}}</p></a>
+                            {{#if ../userLogged}}
                             {{!-- <form action="" method="post">
                                 <button type="submit" class="btn btn-link">Edit</button>
                             </form> --}}
                             <form action="/{{../post._id}}/{{this._id}}" method="post">
-                                <button type="submit" class="btn btn-link">Delete</button>
+                                <button type="submit" class="btn x-btn">x</button>
                             </form>
                         {{/if}}
-                    </a>
+                        </div>
+                        <p class="mb-1">{{this.content}}</p>
+                </div>
                 {{/each}}
             </div>
         </div>

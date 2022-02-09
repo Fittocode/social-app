@@ -1,3 +1,12 @@
+body {
+  background-color: #f1f2f5;
+}
+
+.form-control,
+#content {
+  background-color: #eff2f5;
+}
+
 nav {
   padding-left: 2rem;
 }
@@ -8,6 +17,7 @@ nav {
 
 .container-md {
   width: 60%;
+  margin-bottom: 4rem;
 }
 
 .form-padding {
@@ -16,10 +26,26 @@ nav {
 }
 
 .list-group {
-  padding: 1rem;
+  border-top: none;
+  padding: 1rem 1rem 0 1rem;
 }
 
-.card:hover {
+.grey-comment-box {
+  padding: 0rem 1rem 0.5rem 1rem;
+  margin-bottom: 1rem;
+  background-color: #eff2f5;
+}
+
+.x-btn {
+  color: #616161;
+}
+
+.comment-name {
+  font-size: 1rem;
+  margin-top: 5px;
+}
+
+.newsfeed-card:hover {
   cursor: pointer;
   background-color: rgb(249, 249, 249);
 }
@@ -57,14 +83,23 @@ a {
   font-size: 1.2rem;
 }
 
+.comment-no {
+  padding-top: 7px;
+  font-size: 1rem;
+}
+
 .unlike-btn {
   border: none;
   background-color: transparent;
 }
 
 .heart-img {
-  margin-top: 2px;
+  margin-top: 5px;
   border: none;
-  height: 35px;
-  width: 35px;
+  height: 25px;
+  width: 25px;
+}
+
+.comment-box {
+  margin-top: -2rem;
 }

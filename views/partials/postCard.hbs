@@ -1,5 +1,5 @@
 
-<div class="card mt-4" onclick="location.href='/{{this._id}}';">
+<div class="card newsfeed-card mt-4" onclick="location.href='/{{this._id}}';">
     <div class="card-body">
         <h3 class="card-title">{{this.title}}</h3>
         <div class="card-text">
@@ -11,21 +11,21 @@
                             <p class="likes-no">{{this.likes.length}}</p>
                         </div>
                         <div class="col-2 g-0">
-                            <form action="/{{post._id}}/like" method="post">
-                                {{#if status}}
+                            <form action="/newsfeed/{{this._id}}" method="post">
+                                {{#if this.likes}}
                                 <button class="unlike-btn" type="submit">
                                     <img class="heart-img" src="/images/tiny-heart.png" alt="">
                                 </button>
                                 {{/if}}
-                                {{#unless status}}
+                                {{#unless this.likes}}
                                 <button class="unlike-btn" type="submit">
                                     <img class="heart-img" src="/images/tiny-empty-heart.png" alt="">
                                 </button>
                                 {{/unless}}
                             </form>
                             </div>
-                        <div class="col-8 g-0">
-                            View comments
+                        <div class="col-6 g-0 comment-no">
+                            {{this.comments.length}} comments
                         </div>
                     </div>
                 </div>

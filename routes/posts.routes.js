@@ -24,7 +24,8 @@ router.get('/newsfeed', async (req, res) => {
     res.render('posts/newsfeed', {
       otherUsers: otherUsers,
       userLogged: req.user,
-      posts: friendPosts,
+      posts: friendPosts.reverse(),
+      currentPage: req.url,
     });
   } catch (err) {
     res.redirect('/please-login');
@@ -119,9 +120,21 @@ router.get('/:postId', async (req, res) => {
   }
 });
 
-// post req add like
+// add like from newsfeed
+router.post('/newsfeed/:postId', ensureAuthenticated, async (req, res) => {
+  const { postId } = req.params;
+  const path = `/newsfeed`;
+  addLike(postId, req, res, path);
+});
+
+// post req add like from viewPost
 router.post('/:postId/like', ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
+  const path = `/${postId}`;
+  addLike(postId, req, res, path);
+});
+
+async function addLike(postId, req, res, path) {
   try {
     const post = await Post.findById(postId).populate('likes');
     if (post.likes.find((o) => o.username === req.user.username)) {
@@ -137,11 +150,11 @@ router.post('/:postId/like', ensureAuthenticated, async (req, res) => {
       });
       liked = true;
     }
-    res.redirect(`/${postId}`);
+    res.redirect(path);
   } catch (err) {
     console.log(err.message);
   }
-});
+}
 
 // post req add comment
 router.post('/:postId/comment', ensureAuthenticated, async (req, res) => {
