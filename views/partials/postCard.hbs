@@ -2,10 +2,33 @@
 <div class="card mt-4" onclick="location.href='/{{this._id}}';">
     <div class="card-body">
         <h3 class="card-title">{{this.title}}</h3>
-        <div class="card-text mb-2">
+        <div class="card-text">
             <p>By <a href="/profile/{{this.author._id}}">{{this.author.username}}</a></p>
             <p>{{this.content}}</p>
-            <p>{{this.likes.length}} likes, {{this.comments.length}} comments</p>
+            <div class="button-container">
+                    <div class="row">
+                        <div class="col-1">
+                            <p class="likes-no">{{this.likes.length}}</p>
+                        </div>
+                        <div class="col-2 g-0">
+                            <form action="/{{post._id}}/like" method="post">
+                                {{#if status}}
+                                <button class="unlike-btn" type="submit">
+                                    <img class="heart-img" src="/images/tiny-heart.png" alt="">
+                                </button>
+                                {{/if}}
+                                {{#unless status}}
+                                <button class="unlike-btn" type="submit">
+                                    <img class="heart-img" src="/images/tiny-empty-heart.png" alt="">
+                                </button>
+                                {{/unless}}
+                            </form>
+                            </div>
+                        <div class="col-8 g-0">
+                            View comments
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
 </div>

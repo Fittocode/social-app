@@ -5,37 +5,35 @@
                 <p>By <a href="/profile/{{post.author._id}}">{{post.author.username}}</a></p>
             <div class="card-text mb-2">
                 <p>{{post.content}}</p>
-                <p>{{post.likes.length}} likes, {{post.comments.length}} comments</p>
             </div>
             <p>
                 <div class="button-container">
                     <div class="row">
-                        {{#if status}}
-                        <div class="col-3">
-                        {{/if}}
-                        {{#unless status}}
-                        <div class="col-2">
-                        {{/unless}}
+                        <div class="col-1">
+                            <p class="likes-no">{{post.likes.length}}</p>
+                        </div>
+                        <div class="col-2 g-0">
                             <form action="/{{post._id}}/like" method="post">
                                     {{#if status}}
-                                    <button class="btn btn-success unlike-btn" type="submit">
-                                        Unlike
+                                    <button class="unlike-btn" type="submit">
+                                        <img class="heart-img" src="/images/tiny-heart.png" alt="">
                                     </button>
                                     {{/if}}
                                     {{#unless status}}
-                                    <button class="btn btn-success like-btn" type="submit">
-                                        Like
+                                    <button class="unlike-btn" type="submit">
+                                        <img class="heart-img" src="/images/tiny-empty-heart.png" alt="">
                                     </button>
                                     {{/unless}}
                             </form>
-                        </div>
-                        <div class="col-8">
+                            </div>
+                        <div class="col-8 g-0">
                             <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                 Add Comment
                             </button>
                         </div>
                     </div>
                 </div>
+            </div>
             </p>
             {{#if liked}}
                 <div class="alert alert-primary" role="alert">
@@ -43,15 +41,15 @@
                 </div>
             {{/if}}
             <div class="collapse" id="collapseExample">
-                <form action="/{{post._id}}/comment" method="post">
-                <div class="form-group">
-                    <label for="content" name='content'></label>
-                    <textarea name="content" id="content" placeholder="Write a comment" class="form-control"></textarea>
-                </div>
-                <br />
-                <div class="form-group mb-3">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
+                <form action="/{{post._id}}/comment" method="post" class="form-padding">
+                    <div class="form-group">
+                        <label for="content" name='content'></label>
+                        <textarea name="content" id="content" placeholder="Write a comment" class="form-control"></textarea>
+                    </div>
+                    <br />
+                    <div class="form-group mb-3">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
                 </form>
             </div>
             <div class="list-group">

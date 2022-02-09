@@ -3,6 +3,35 @@ const Post = require('../models/Post.models');
 const Comment = require('../models/Comment.models');
 const User = require('../models/User.models');
 
+router.get('/newsfeed', async (req, res) => {
+  try {
+    const otherUsers = await User.find();
+    const user = await User.findById(req.user._id).populate({
+      path: 'friends',
+      populate: {
+        path: 'posts',
+        model: 'Post',
+      },
+    });
+    let friendsArray = [];
+    user.friends.forEach((friend) => {
+      friendsArray.push(friend._id);
+    });
+    const friendPosts = await Post.find({
+      author: { $in: friendsArray },
+    }).populate('author');
+
+    res.render('posts/newsfeed', {
+      otherUsers: otherUsers,
+      userLogged: req.user,
+      posts: friendPosts,
+    });
+  } catch (err) {
+    res.redirect('/please-login');
+    console.log(err.message);
+  }
+});
+
 // get req add post page
 router.get('/:userId/add-post', (req, res) => {
   res.render('posts/addPost', { userLogged: req.user });

@@ -1,6 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const favicon = require('serve-favicon');
 
 module.exports = (app, hbs) => {
   app.set('views', path.join(__dirname, '..', 'views'));

@@ -10,6 +10,15 @@ nav {
   width: 60%;
 }
 
+.form-padding {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.list-group {
+  padding: 1rem;
+}
+
 .card:hover {
   cursor: pointer;
   background-color: rgb(249, 249, 249);
@@ -41,4 +50,21 @@ a {
   background-color: #108698;
   border-color: #108698;
   color: white;
+}
+
+.likes-no {
+  padding-top: 5px;
+  font-size: 1.2rem;
+}
+
+.unlike-btn {
+  border: none;
+  background-color: transparent;
+}
+
+.heart-img {
+  margin-top: 2px;
+  border: none;
+  height: 35px;
+  width: 35px;
 }
