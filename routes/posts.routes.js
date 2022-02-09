@@ -2,22 +2,16 @@ const router = require('express').Router();
 const Post = require('../models/Post.models');
 const Comment = require('../models/Comment.models');
 const User = require('../models/User.models');
+const checkIsFriend = require('../config/javascript');
 
 router.get('/newsfeed', async (req, res) => {
   try {
     const otherUsers = await User.find();
-    const user = await User.findById(req.user._id).populate({
-      path: 'friends',
-      populate: {
-        path: 'posts',
-        model: 'Post',
-      },
-    });
-    let friendsArray = [];
-    user.friends.forEach((friend) => {
-      friendsArray.push(friend._id);
-    });
-    const friendPosts = await Post.find({
+
+    const loggedUser = req.user;
+    let friendsArray = await checkIsFriend(loggedUser);
+
+    friendPosts = await Post.find({
       author: { $in: friendsArray },
     }).populate('author');
 
