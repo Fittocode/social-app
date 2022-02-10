@@ -22,6 +22,7 @@ router.get('/profile/:userId', async (req, res) => {
 
     res.render('users/publicUserProfile', {
       userLogged: req.user,
+      notifications: user.notifications.reverse(),
       profile: profile,
       posts: posts,
       friendStatus: friendStatus,

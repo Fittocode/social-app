@@ -42,11 +42,15 @@
               <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-              <ul>
-              {{#each userLogged.notifications}}
-                <li>{{this.user.username}} {{this.action}} your post <a href="{{this.post._id}}"><i>{{this.post.title}}</i></a></li>
+              {{#each notifications}}
+              <div class="card newsfeed-card" onclick="location.href='/{{this.post._id}}';">
+                <div class="card-body">
+                  <img class="notification-icon" src="/images/{{this.icon}}" alt=""> 
+                  <b>{{this.user.username}}</b> 
+                  {{this.action}} your post <i>{{this.post.title}}</i>
+                </div>
+              </div>
               {{/each}}
-              </ul>
             </div>
           </div>
           {{/if}}

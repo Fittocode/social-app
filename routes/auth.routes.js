@@ -13,10 +13,12 @@ router.get('/user-profile', ensureAuthenticated, async (req, res) => {
         { path: 'post', model: 'Post' },
       ],
     });
-
-  console.log(user.notifications);
   const posts = await user.posts.reverse();
-  res.render('users/userProfile', { userLogged: user, posts: posts });
+  res.render('users/userProfile', {
+    userLogged: user,
+    notifications: user.notifications.reverse(),
+    posts: posts,
+  });
 });
 
 router.get('/login', (req, res) => {

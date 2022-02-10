@@ -19,8 +19,9 @@ const userSchema = new Schema({
   notifications: [
     {
       user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-      action: { type: String, required: true },
+      action: { type: String },
       post: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
+      icon: { type: String },
     },
   ],
   slug: {

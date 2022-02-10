@@ -78,14 +78,14 @@ a {
   color: white;
 }
 
-.likes-no {
+.likes-no,
+.comments-no {
   padding-top: 5px;
   font-size: 1.2rem;
 }
 
-.comment-no {
-  padding-top: 7px;
-  font-size: 1rem;
+.comments-no {
+  margin-right: 1px;
 }
 
 .unlike-btn {
@@ -93,7 +93,8 @@ a {
   background-color: transparent;
 }
 
-.heart-img {
+.heart-img,
+.comment-img {
   margin-top: 5px;
   border: none;
   height: 25px;
@@ -110,4 +111,9 @@ a {
 
 .badge {
   margin-top: 4px;
+}
+
+.notification-icon {
+  height: 20px;
+  width: 20px;
 }
