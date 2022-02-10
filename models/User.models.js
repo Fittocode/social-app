@@ -16,7 +16,13 @@ const userSchema = new Schema({
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   likedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
-  notifications: [Object],
+  notifications: [
+    {
+      user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      action: { type: String, required: true },
+      post: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
+    },
+  ],
   slug: {
     type: String,
     required: true,

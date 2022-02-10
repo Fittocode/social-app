@@ -8,8 +8,17 @@ router.get('/newsfeed', async (req, res) => {
   try {
     const otherUsers = await User.find();
 
-    const loggedUser = req.user;
-    let friendsArray = await checkIsFriend(loggedUser);
+    const user = await User.findOne(req.user)
+      .populate('posts friends notifications')
+      .populate({
+        path: 'notifications',
+        populate: [
+          { path: 'user', model: 'User' },
+          { path: 'post', model: 'Post' },
+        ],
+      });
+
+    let friendsArray = await checkIsFriend(user);
 
     friendPosts = await Post.find({
       author: { $in: friendsArray },
@@ -17,7 +26,7 @@ router.get('/newsfeed', async (req, res) => {
 
     res.render('posts/newsfeed', {
       otherUsers: otherUsers,
-      userLogged: req.user,
+      userLogged: user,
       posts: friendPosts.reverse(),
       currentPage: req.url,
     });
@@ -46,7 +55,6 @@ router.post('/:userId/add-post', async (req, res) => {
     await User.findByIdAndUpdate(userId, {
       $push: { posts: userPost },
     });
-    console.log(req.user);
     res.redirect('/user-profile');
   } catch (err) {
     console.log(err.message);
@@ -100,7 +108,6 @@ router.get('/:postId', async (req, res) => {
           model: 'User',
         },
       });
-    console.log(post);
     let liked = post.likes.find((o) => o.username === req.user.username)
       ? true
       : false;
@@ -132,6 +139,7 @@ async function addLike(postId, req, res, path) {
   try {
     const post = await Post.findById(postId).populate('likes');
     if (post.likes.find((o) => o.username === req.user.username)) {
+      removeNotification(postId, req, 'liked');
       await Post.findByIdAndUpdate(postId, {
         $pullAll: {
           likes: [{ _id: req.user._id }],
@@ -139,6 +147,7 @@ async function addLike(postId, req, res, path) {
       });
       liked = false;
     } else {
+      addNotification(postId, req, 'liked');
       await Post.findByIdAndUpdate(postId, {
         $push: { likes: req.user },
       });
@@ -148,6 +157,23 @@ async function addLike(postId, req, res, path) {
   } catch (err) {
     console.log(err.message);
   }
+}
+
+async function addNotification(postId, req, action) {
+  const post = await Post.findById(postId).populate('author');
+  const userNotifications = await User.findByIdAndUpdate(post.author._id, {
+    $push: { notifications: { user: req.user, action: action, post: post } },
+  });
+  console.log(userNotifications);
+}
+
+async function removeNotification(postId, req, action) {
+  const post = await Post.findById(postId).populate('author');
+  console.log(post.author._id);
+  const userNotifications = await User.findByIdAndUpdate(post.author._id, {
+    $pull: { notifications: { user: req.user, action: action, post: post } },
+  });
+  console.log(userNotifications);
 }
 
 // post req add comment
