@@ -49,14 +49,11 @@
                 <div class="list-group grey-comment-box">
                         <div class="d-flex w-100 justify-content-between">
                             <a href="/profile/{{this.author._id}}" class="comment-name"><p class="mb-1 comment-name">{{this.author.username}}</p></a>
-                            {{#if ../userLogged}}
-                            {{!-- <form action="" method="post">
-                                <button type="submit" class="btn btn-link">Edit</button>
-                            </form> --}}
-                            <form action="/{{../post._id}}/{{this._id}}" method="post">
-                                <button type="submit" class="btn x-btn">x</button>
-                            </form>
-                        {{/if}}
+                            {{#if this.isLoggedUser}}
+                                <form action="/{{../post._id}}/{{this._id}}" method="post">
+                                    <button type="submit" class="btn x-btn">x</button>
+                                </form>
+                            {{/if}}
                         </div>
                         <p class="mb-1">{{this.content}}</p>
                 </div>

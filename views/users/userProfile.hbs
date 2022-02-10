@@ -40,7 +40,35 @@
             <h3 class="card-title">{{this.title}}</h3>
             <div class="card-text mb-2">
             <p>{{this.content}}</p>
-            <p>{{this.likes.length}} likes, {{this.comments.length}} comments</p>
+            <div class="button-container">
+                    <div class="row">
+                        <div class="col-1">
+                            <p class="likes-no">{{this.likes.length}}</p>
+                        </div>
+                        <div class="col-1 g-0">
+                            <form action="/newsfeed/{{this._id}}" method="post">
+                                {{#if this.likes}}
+                                <button class="unlike-btn" type="submit">
+                                    <img class="heart-img" src="/images/like.png" alt="">
+                                </button>
+                                {{/if}}
+                                {{#unless this.likes}}
+                                <button class="unlike-btn" type="submit">
+                                    <img class="heart-img" src="/images/tiny-empty-heart.png" alt="">
+                                </button>
+                                {{/unless}}
+                            </form>
+                            </div>
+                        <div class="col-1">
+                            <p class="comments-no">{{this.comments.length}}</p>
+                        </div>
+                        <div class="col-1 g-0">
+                            <button class="unlike-btn" type="submit">
+                                <img class="comment-img" src="/images/notification.png" alt="">
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <a href="/update/{{this._id}}" class="btn btn-info">Update</a>
             <form action="/delete/{{this._id}}" method='post' class="d-inline">

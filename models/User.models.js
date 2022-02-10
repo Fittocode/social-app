@@ -13,7 +13,6 @@ const userSchema = new Schema({
     required: [true, 'A password is required'],
   },
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
-  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   likedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
   notifications: [

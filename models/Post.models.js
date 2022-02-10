@@ -15,7 +15,14 @@ const postSchema = new Schema({
     type: String,
     required: 'true',
   },
-  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+  comments: [
+    {
+      author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      content: { type: String, required: true },
+      isLoggedUser: { type: Boolean, default: 'false' },
+      createdAt: { type: Date, default: Date.now() },
+    },
+  ],
   likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 });
 

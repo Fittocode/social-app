@@ -5,6 +5,15 @@ const checkIsFriend = require('../config/javascript');
 router.get('/profile/:userId', async (req, res) => {
   const { userId } = req.params;
   try {
+    const user = await User.findOne(req.user)
+      .populate('posts friends notifications')
+      .populate({
+        path: 'notifications',
+        populate: [
+          { path: 'user', model: 'User' },
+          { path: 'post', model: 'Post' },
+        ],
+      });
     // check if friend
     const loggedUser = req.user;
     const friends = await checkIsFriend(loggedUser);

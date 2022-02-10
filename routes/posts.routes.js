@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const Post = require('../models/Post.models');
-const Comment = require('../models/Comment.models');
 const User = require('../models/User.models');
 const checkIsFriend = require('../config/javascript');
 
@@ -19,7 +18,6 @@ router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
       });
 
     let friendsArray = await checkIsFriend(user);
-
     friendPosts = await Post.find({
       author: { $in: friendsArray },
     }).populate('author');
@@ -119,6 +117,22 @@ router.get('/:postId', async (req, res) => {
           model: 'User',
         },
       });
+
+    let myComment;
+    let userComments = post.comments.filter(
+      (comment) => comment.author.username === req.user.username
+    );
+
+    if (post.comments.length > 0) {
+      if (userComments) {
+        userComments.forEach((comment) => {
+          if (comment.author._id.toString() === req.user._id.toString()) {
+            comment.isLoggedUser = 'true';
+          }
+        });
+      }
+    }
+
     let liked = post.likes.find((o) => o.username === req.user.username)
       ? true
       : false;
@@ -127,6 +141,7 @@ router.get('/:postId', async (req, res) => {
       notifications: user.notifications.reverse(),
       post: post,
       status: liked,
+      myComment: myComment,
     });
   } catch (err) {
     console.log(err.message);
@@ -179,19 +194,16 @@ async function addNotification(postId, req, action) {
       notifications: { user: req.user, action: action, post: post, icon: icon },
     },
   });
-  console.log(userNotifications);
 }
 
 async function removeNotification(postId, req, action) {
   let icon = action === 'liked' ? 'like.png' : 'notification.png';
   const post = await Post.findById(postId).populate('author');
-  console.log(post.author._id);
   const userNotifications = await User.findByIdAndUpdate(post.author._id, {
     $pull: {
       notifications: { user: req.user, action: action, post: post, icon: icon },
     },
   });
-  console.log(userNotifications);
 }
 
 // post req add comment
@@ -199,12 +211,13 @@ router.post('/:postId/comment', ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
   const { content } = req.body;
   try {
-    const comment = await Comment.create({
-      author: req.user,
-      content,
-    });
     await Post.findByIdAndUpdate(postId, {
-      $push: { comments: comment },
+      $push: {
+        comments: {
+          author: req.user,
+          content: content,
+        },
+      },
     });
     addNotification(postId, req, 'commented on');
     res.redirect(`/${postId}`);
@@ -217,17 +230,14 @@ router.post('/:postId/comment', ensureAuthenticated, async (req, res) => {
 router.post('/:postId/:commentId', async (req, res) => {
   const { postId, commentId } = req.params;
   try {
-    const comment = await Comment.findById(commentId).populate('author');
-    if (comment.author.username === req.user.username) {
-      await Comment.findByIdAndDelete(commentId);
-      await Post.findByIdAndUpdate(postId, {
-        $pullAll: {
-          comments: [{ _id: commentId }],
-        },
-      });
-      removeNotification(postId, req, 'commented on');
-      res.redirect(`/${postId}`);
-    }
+    const post = await Post.findById(postId);
+    await Post.findByIdAndUpdate(postId, {
+      $pull: {
+        comments: { _id: commentId },
+      },
+    });
+    removeNotification(postId, req, 'commented on');
+    res.redirect(`/${postId}`);
   } catch (err) {
     console.log(err);
   }
