@@ -10,17 +10,16 @@ router.get('/profile/:userId', async (req, res) => {
     const friends = await checkIsFriend(loggedUser);
     const friendId = await User.findById(userId);
     let friendStatus;
-    console.log(friends[0]);
-    console.log(friendId._id);
-    console.log(friends[0] == friendId);
-    if (friends.includes(friendId.username)) {
+    if (friends.includes(friendId._id.toString())) {
       friendStatus = true;
-    } else {
-      friendStatus = false;
     }
-
+    // if loggedUser public profile, redirect to loggedUser profile
+    if (userId === req.user._id.toString()) {
+      res.redirect('/user-profile');
+    }
     const profile = await User.findById(userId).populate('posts');
     const posts = profile.posts.reverse();
+
     res.render('users/publicUserProfile', {
       userLogged: req.user,
       profile: profile,
@@ -33,7 +32,6 @@ router.get('/profile/:userId', async (req, res) => {
 });
 
 // post req add friend
-
 router.post('/profile/:userId/add-friend', async (req, res) => {
   const { userId } = req.params;
   try {

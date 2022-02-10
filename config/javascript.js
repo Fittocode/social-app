@@ -10,7 +10,7 @@ const checkIfFriend = async (loggedUser) => {
     },
   });
   user.friends.forEach((friend) => {
-    friendsArray.push(friend._id);
+    friendsArray.push(friend._id.toString());
   });
 
   return friendsArray;
