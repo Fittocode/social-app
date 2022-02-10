@@ -37,7 +37,7 @@ router.post('/signup', async (req, res) => {
     const passwordHash = await bcrypt.hash(password, 10);
     await User.create({ username, password: passwordHash });
     console.log('user created');
-    res.render('auth/login');
+    res.render('auth/login', { username: username });
   } catch (err) {
     res.status(500).render('auth/signup', {
       error: 'That username is already in use',
