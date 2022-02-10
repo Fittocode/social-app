@@ -23,6 +23,9 @@ app.use('/', posts);
 const users = require('./routes/users.routes');
 app.use('/', users);
 
+const notifications = require('./routes/notifications.routes');
+app.use('/', notifications);
+
 require('./error-handling')(app);
 
 // local host 3000 listening

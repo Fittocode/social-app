@@ -9,37 +9,35 @@
     <title>Social App</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  {{#if userLogged}}
-  <a class="navbar-brand" href="/newsfeed">Social App</a>
-  {{/if}}
-  {{#unless userLogged}}
-  <a class="navbar-brand" href="/">Social App</a>
-  {{/unless}}
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      {{#if userLogged}}
-      <li class="nav-item">
-        <a class="nav-link" href="/user-profile">Profile</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/logout">Logout</a>
-      </li>
-      {{/if}}
-      {{#unless userLogged}} 
-        <li class="nav-item">
-        <a class="nav-link" href="/signup">Sign Up</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/login">Login</a>
-      </li>
-      {{/unless}}
-    </ul>
-  </div>
-</nav>
+  <nav class="navbar navbar-light bg-light">
+    <div class="container g-0">
+        <div class="d-flex justify-content-start">
+          {{#if userLogged}}
+            <a class="navbar-brand" href="/newsfeed">Social App</a>
+          {{/if}}
+          {{#unless userLogged}}
+            <a class="navbar-brand" href="/">Social App</a>
+          {{/unless}}
+          {{#if userLogged}}
+            <a class="nav-link" href="/user-profile">Profile</a>
+            <a class="nav-link" href="/logout">Logout</a>
+          {{/if}}
+          {{#unless userLogged}} 
+            <a class="nav-link" href="/signup">Sign Up</a>
+            <a class="nav-link" href="/login">Login</a>
+          {{/unless}}
+        </div>
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-primary btn-size position-relative">
+              Inbox
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                1
+                <span class="visually-hidden">unread messages</span>
+              </span>
+          </button>
+        </div>
+    </div>
+  </nav>
 <br />
     {{{ body }}}
 

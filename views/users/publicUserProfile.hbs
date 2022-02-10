@@ -3,14 +3,14 @@
     <h1>{{profile.username}}</h1>
     <form action="/profile/{{profile._id}}/add-friend" method="post">
     {{#if friendStatus}}
-        You and {{profile.username}} are friends!
+    <h3><span class="badge bg-primary">Friend</span></h3>
     {{/if}}
     {{#unless friendStatus}}
         <button class="btn btn-primary" type="submit">Add Friend</button>
     {{/unless}}
     </form>
     {{#each posts}}
-    <div class="card mt-4" onclick="location.href='/{{this._id}}';">
+    <div class="card newsfeed-card mt-4" onclick="location.href='/{{this._id}}';">
         <div class="card-body">
             <h3 class="card-title">{{this.title}}</h3>
             <div class="card-text mb-2">
