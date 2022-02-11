@@ -117,3 +117,8 @@ a {
   height: 20px;
   width: 20px;
 }
+
+.tiny-gravatar {
+  height: 40px;
+  width: 40px;
+}

@@ -1,15 +1,16 @@
 
 <div class="container">
     <h1>{{profile.username}}</h1>
-    {{#if friendStatus}}
-    <h3><span class="badge bg-primary">Friend</span></h3>
+    {{#if followingStatus}}
+    <h3><span class="badge bg-primary">Follwing</span></h3>
     {{/if}}
     <div>
         <img src='{{gravatar}}' alt="">
     </div>
-    <form action="/profile/{{profile._id}}/add-friend" method="post">
-    {{#unless friendStatus}}
-        <button class="btn btn-primary" type="submit">Add Friend</button>
+    <br />
+    <form action="/profile/{{profile._id}}/follower" method="post">
+    {{#unless followingStatus}}
+        <button class="btn btn-primary" type="submit">Follow</button>
     {{/unless}}
     </form>
     {{#each posts}}

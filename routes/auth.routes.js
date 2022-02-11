@@ -5,21 +5,18 @@ const User = require('../models/User.models');
 const secureGravUrl = require('../config/gravatar');
 const mongoose = require('mongoose');
 
-router.get('/user-profile', ensureAuthenticated, async (req, res) => {
-  const user = await User.findOne(req.user)
-    .populate('posts friends notifications')
-    .populate({
-      path: 'notifications',
-      populate: [
-        { path: 'user', model: 'User' },
-        { path: 'post', model: 'Post' },
-      ],
-    });
+// js functions
+const {
+  findAndPopulateUser,
+  ensureAuthenticated,
+} = require('../config/javascriptFunctions');
 
+router.get('/user-profile', ensureAuthenticated, async (req, res) => {
+  const user = await findAndPopulateUser(User, req);
   const posts = await user.posts.reverse();
   res.render('users/userProfile', {
     userLogged: user,
-    gravatar: secureGravUrl(user, '200'),
+    gravatar: user.gravatar,
     notifications: user.notifications.reverse(),
     posts: posts,
   });
@@ -36,7 +33,7 @@ router.get('/please-login', (req, res) => {
 router.post(
   '/login',
   passport.authenticate('local', {
-    successRedirect: '/user-profile',
+    successRedirect: '/newsfeed',
     failureRedirect: '/login',
     failureFlash: true,
   })
@@ -66,8 +63,14 @@ router.post('/signup', async (req, res, next) => {
   }
   try {
     const passwordHash = await bcrypt.hash(password, 10);
-    await User.create({ username, password: passwordHash, email });
+    const user = await User.create({ username, password: passwordHash, email });
     console.log('user created');
+    await User.findByIdAndUpdate(user._id, {
+      $push: {
+        usersFollowed: '6206c222abd5bf38ca0efe8c',
+      },
+      gravatar: secureGravUrl(user, '200'),
+    });
     res.render('auth/login', { username: username });
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
@@ -85,13 +88,5 @@ router.get('/logout', ensureAuthenticated, (req, res) => {
   req.logOut();
   res.redirect('/login');
 });
-
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  } else {
-    res.redirect('/login');
-  }
-}
 
 module.exports = router;

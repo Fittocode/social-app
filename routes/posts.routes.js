@@ -1,11 +1,12 @@
 const router = require('express').Router();
 const Post = require('../models/Post.models');
 const User = require('../models/User.models');
+
 // js functions
 const {
   addLike,
   addNotification,
-  checkIfFriend,
+  checkIfFollowing,
   checkIfLoggedUserComment,
   ensureAuthenticated,
   findAndPopulateUser,
@@ -15,19 +16,23 @@ const {
 
 router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
   try {
-    const otherUsers = await User.find();
+    const otherUsers = await User.find({
+      _id: {
+        $nin: [req.user._id, '6206c222abd5bf38ca0efe8c'],
+      },
+    });
     const user = await findAndPopulateUser(User, req);
 
-    let friendsArray = await checkIfFriend(req);
-    friendPosts = await Post.find({
-      author: { $in: friendsArray },
+    let usersFollowingArray = await checkIfFollowing(req);
+    usersFollowingPosts = await Post.find({
+      author: { $in: usersFollowingArray },
     }).populate('author');
 
     res.render('posts/newsfeed', {
       otherUsers: otherUsers,
       userLogged: user,
       notifications: user.notifications.reverse(),
-      posts: friendPosts.reverse(),
+      posts: usersFollowingPosts.reverse(),
       currentPage: req.url,
     });
   } catch (err) {

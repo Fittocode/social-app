@@ -3,29 +3,29 @@
     {{#if userLogged}}
     <h1>Welcome, {{userLogged.username}}!</h1>
     <div>
-        <img src='{{gravatar}}' alt="">
+        <img src='{{userLogged.gravatar}}' alt="">
     </div>
     <br />
     <div class="button-container">
         <div class="row">
             <div class="col-5">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalLong">
-                    Friend List
+                    Following
                 </button>
                 <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Friends list</h5>
+                                <h5 class="modal-title" id="exampleModalLongTitle">Following</h5>
                             </div>
                             <div class="modal-body">
                                 <div class="container">
                                     <div class="row row-cols-3">
-                                    {{#each userLogged.friends}}
+                                    {{#each userLogged.usersFollowed}}
                                         <div class="col">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <img src="{{this.gravatar}}" alt="">
+                                                    <img src="{{this.gravatar}}" alt="" class="tiny-gravatar">
                                                     <a href="/profile/{{this._id}}">{{this.username}}</a>
                                                 </div>
                                             </div>

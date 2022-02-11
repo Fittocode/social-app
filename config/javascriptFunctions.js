@@ -45,20 +45,20 @@ const removeNotification = async (postId, req, action) => {
   });
 };
 
-const checkIfFriend = async (req) => {
-  let friendsArray = [];
+const checkIfFollowing = async (req) => {
+  let usersFollowingArray = [];
   const user = await User.findById(req.user._id).populate({
-    path: 'friends',
+    path: 'usersFollowed',
     populate: {
       path: 'posts',
       model: 'Post',
     },
   });
-  user.friends.forEach((friend) => {
-    friendsArray.push(friend._id.toString());
+  user.usersFollowed.forEach((user) => {
+    usersFollowingArray.push(user._id.toString());
   });
 
-  return friendsArray;
+  return usersFollowingArray;
 };
 
 const checkIfLoggedUserComment = (post, req) => {
@@ -89,7 +89,7 @@ const ensureAuthenticated = (req, res, next) => {
 
 const findAndPopulateUser = async (User, req) => {
   const user = await User.findOne(req.user)
-    .populate('posts friends notifications')
+    .populate('posts usersFollowed notifications')
     .populate({
       path: 'notifications',
       populate: [
@@ -115,7 +115,7 @@ const findAndPopulatePost = async (Post, postId) => {
 
 module.exports = {
   ensureAuthenticated,
-  checkIfFriend,
+  checkIfFollowing,
   findAndPopulateUser,
   addNotification,
   removeNotification,

@@ -25,9 +25,10 @@ const userSchema = new Schema(
     },
     gravatar: {
       type: String,
+      default: '',
     },
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
-    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    usersFollowed: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     likedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     notifications: [
       {

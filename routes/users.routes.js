@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const User = require('../models/User.models');
 const secureGravUrl = require('../config/gravatar');
+
 // js functions
 const {
-  checkIfFriend,
+  checkIfFollowing,
   findAndPopulateUser,
 } = require('../config/javascriptFunctions');
 
@@ -11,12 +12,12 @@ router.get('/profile/:userId', async (req, res) => {
   const { userId } = req.params;
   try {
     const user = await findAndPopulateUser(User, req);
-    // check if friend
-    const friends = await checkIfFriend(req);
-    const friendId = await User.findById(userId);
-    let friendStatus;
-    if (friends.includes(friendId._id.toString())) {
-      friendStatus = true;
+    // check if following
+    const usersFollowing = await checkIfFollowing(req);
+    const userFollowedId = await User.findById(userId);
+    let followingStatus;
+    if (usersFollowing.includes(userFollowedId._id.toString())) {
+      followingStatus = true;
     }
     // if loggedUser public profile, redirect to loggedUser profile
     if (userId === req.user._id.toString()) {
@@ -31,18 +32,20 @@ router.get('/profile/:userId', async (req, res) => {
       notifications: user.notifications.reverse(),
       profile: profile,
       posts: posts,
-      friendStatus: friendStatus,
+      followingStatus: followingStatus,
     });
   } catch (err) {
     console.log(err.message);
   }
 });
 
-// post req add friend
-router.post('/profile/:userId/add-friend', async (req, res) => {
+// post req follow user
+router.post('/profile/:userId/follow', async (req, res) => {
   const { userId } = req.params;
   try {
-    await User.findByIdAndUpdate(req.user._id, { $push: { friends: userId } });
+    await User.findByIdAndUpdate(req.user._id, {
+      $push: { usersFollowing: userId },
+    });
     res.redirect('/user-profile');
   } catch (err) {
     console.log(err.message);
