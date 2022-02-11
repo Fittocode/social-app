@@ -18,17 +18,20 @@
         </a>
     </p>
     <div class="collapse" id="collapseExample">
-        <div class="card card-body">
-            <p>Perhaps you know someone from the list of current users...</p>
-            <div class="card">
-                {{#each otherUsers}}
-                <div class="card-body">
-                    <img src="{{this.gravatar}}" alt="" class="tiny-gravatar">
-                    <a href="/profile/{{this._id}}">{{this.username}}</a>
-                </div>
-                {{/each}}
+            <div class="card card-body">
+                {{#if otherUsers}}
+                <p>Perhaps you know someone from the list of current users...</p>
+                    {{#each otherUsers}}
+                    <div class="card-body">
+                        <img src="{{this.gravatar}}" alt="" class="tiny-gravatar">
+                        <a href="/profile/{{this._id}}">{{this.username}}</a>
+                    </div>
+                    {{/each}}
+                {{/if}}
+                {{#unless otherUsers}}
+                    <p>Whoops, looks like you're following everyone!</p>
+                {{/unless}}
             </div>
-        </div>
     </div>
 </div>
 

@@ -8,7 +8,7 @@
         <img src='{{gravatar}}' alt="">
     </div>
     <br />
-    <form action="/profile/{{profile._id}}/follower" method="post">
+    <form action="/profile/{{profile._id}}/follow" method="post">
     {{#unless followingStatus}}
         <button class="btn btn-primary" type="submit">Follow</button>
     {{/unless}}

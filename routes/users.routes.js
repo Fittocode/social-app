@@ -4,6 +4,7 @@ const secureGravUrl = require('../config/gravatar');
 
 // js functions
 const {
+  addFollowNotification,
   checkIfFollowing,
   findAndPopulateUser,
 } = require('../config/javascriptFunctions');
@@ -44,9 +45,10 @@ router.post('/profile/:userId/follow', async (req, res) => {
   const { userId } = req.params;
   try {
     await User.findByIdAndUpdate(req.user._id, {
-      $push: { usersFollowing: userId },
+      $push: { usersFollowed: userId },
     });
-    res.redirect('/user-profile');
+    await addFollowNotification(userId, req);
+    res.redirect('/newsfeed');
   } catch (err) {
     console.log(err.message);
   }

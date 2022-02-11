@@ -67,7 +67,7 @@ router.post('/signup', async (req, res, next) => {
     console.log('user created');
     await User.findByIdAndUpdate(user._id, {
       $push: {
-        usersFollowed: '6206c222abd5bf38ca0efe8c',
+        usersFollowed: '6206d02f574d695bd6f5f533',
       },
       gravatar: secureGravUrl(user, '200'),
     });

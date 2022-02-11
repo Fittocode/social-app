@@ -10,13 +10,13 @@ const addLike = async (postId, req, res, path) => {
           likes: [{ _id: req.user._id }],
         },
       });
-      await removeNotification(postId, req, 'liked');
+      await removePostNotification(postId, req, 'liked');
       liked = false;
     } else {
       await Post.findByIdAndUpdate(postId, {
         $push: { likes: req.user },
       });
-      await addNotification(postId, req, 'liked');
+      await addPostNotification(postId, req, 'liked');
       liked = true;
     }
     res.redirect(path);
@@ -25,22 +25,45 @@ const addLike = async (postId, req, res, path) => {
   }
 };
 
-const addNotification = async (postId, req, action) => {
+const addPostNotification = async (postId, req, action) => {
   let icon = action === 'liked' ? 'like.png' : 'notification.png';
   const post = await Post.findById(postId).populate('author');
   await User.findByIdAndUpdate(post.author._id, {
     $push: {
-      notifications: { user: req.user, action: action, post: post, icon: icon },
+      notifications: {
+        user: req.user,
+        action: action,
+        form: { post: post },
+        icon: icon,
+      },
     },
   });
 };
 
-const removeNotification = async (postId, req, action) => {
+const removePostNotification = async (postId, req, action) => {
   let icon = action === 'liked' ? 'like.png' : 'notification.png';
   const post = await Post.findById(postId).populate('author');
   await User.findByIdAndUpdate(post.author._id, {
     $pull: {
-      notifications: { user: req.user, action: action, post: post, icon: icon },
+      notifications: {
+        user: req.user,
+        action: action,
+        form: { post: post },
+        icon: icon,
+      },
+    },
+  });
+};
+
+const addFollowNotification = async (userId, req) => {
+  await User.findByIdAndUpdate(userId, {
+    $push: {
+      notifications: {
+        user: req.user,
+        action: 'followed',
+        form: { follow: 'follow' },
+        icon: 'friend-request-icon.png',
+      },
     },
   });
 };
@@ -117,8 +140,9 @@ module.exports = {
   ensureAuthenticated,
   checkIfFollowing,
   findAndPopulateUser,
-  addNotification,
-  removeNotification,
+  addPostNotification,
+  addFollowNotification,
+  removePostNotification,
   addLike,
   checkIfLoggedUserComment,
   findAndPopulatePost,

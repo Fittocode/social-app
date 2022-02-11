@@ -31,8 +31,10 @@
           {{#if userLogged}}
           <button class="btn btn-primary btn-size position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
             Inbox
+              {{#if userLogged.notifications}}
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 {{userLogged.notifications.length}}
+              {{/if}}
                 <span class="visually-hidden">unread messages</span>
               </span>
             </button>
@@ -47,7 +49,12 @@
                 <div class="card-body">
                   <img class="notification-icon" src="/images/{{this.icon}}" alt=""> 
                   <b>{{this.user.username}}</b> 
-                  {{this.action}} your post <i>{{this.post.title}}</i>
+                  {{#if form.post}}
+                    {{this.action}} your post <i>{{this.form.post.title}}</i>
+                  {{/if}}
+                  {{#if form.follow}}
+                    just {{this.action}} you!
+                  {{/if}}
                 </div>
               </div>
               {{/each}}

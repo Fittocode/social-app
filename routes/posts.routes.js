@@ -5,20 +5,24 @@ const User = require('../models/User.models');
 // js functions
 const {
   addLike,
-  addNotification,
+  addPostNotification,
   checkIfFollowing,
   checkIfLoggedUserComment,
   ensureAuthenticated,
   findAndPopulateUser,
   findAndPopulatePost,
-  removeNotification,
+  removePostNotification,
 } = require('../config/javascriptFunctions');
 
 router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
   try {
+    const following = await checkIfFollowing(req);
+    console.log(following);
+    following.push(req.user._id.toString());
+    console.log(following);
     const otherUsers = await User.find({
       _id: {
-        $nin: [req.user._id, '6206c222abd5bf38ca0efe8c'],
+        $nin: [...following],
       },
     });
     const user = await findAndPopulateUser(User, req);
@@ -150,7 +154,7 @@ router.post('/:postId/comment', ensureAuthenticated, async (req, res) => {
         },
       },
     });
-    addNotification(postId, req, 'commented on');
+    addPostNotification(postId, req, 'commented on');
     res.redirect(`/${postId}`);
   } catch (err) {
     console.log(err.message);
@@ -166,7 +170,7 @@ router.post('/:postId/:commentId', async (req, res) => {
         comments: { _id: commentId },
       },
     });
-    removeNotification(postId, req, 'commented on');
+    removePostNotification(postId, req, 'commented on');
     res.redirect(`/${postId}`);
   } catch (err) {
     console.log(err);

@@ -34,7 +34,10 @@ const userSchema = new Schema(
       {
         user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
         action: { type: String },
-        post: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
+        form: {
+          post: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
+          follow: { type: String },
+        },
         icon: { type: String },
       },
     ],
