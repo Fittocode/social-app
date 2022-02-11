@@ -1,15 +1,16 @@
 const router = require('express').Router();
 const Post = require('../models/Post.models');
 const User = require('../models/User.models');
-// javascript functions
+// js functions
 const {
-  ensureAuthenticated,
-  checkIfFriend,
-  findAndPopulateUser,
-  addNotification,
-  removeNotification,
   addLike,
+  addNotification,
+  checkIfFriend,
   checkIfLoggedUserComment,
+  ensureAuthenticated,
+  findAndPopulateUser,
+  findAndPopulatePost,
+  removeNotification,
 } = require('../config/javascriptFunctions');
 
 router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
@@ -17,7 +18,7 @@ router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
     const otherUsers = await User.find();
     const user = await findAndPopulateUser(User, req);
 
-    let friendsArray = await checkIfFriend(user);
+    let friendsArray = await checkIfFriend(req);
     friendPosts = await Post.find({
       author: { $in: friendsArray },
     }).populate('author');
@@ -99,16 +100,7 @@ router.get('/:postId', async (req, res) => {
   const { postId } = req.params;
   try {
     const user = await findAndPopulateUser(User, req);
-    const post = await Post.findById(postId)
-      .populate('author likes comments')
-      .populate({
-        path: 'comments',
-        populate: {
-          path: 'author',
-          model: 'User',
-        },
-      });
-
+    const post = await findAndPopulatePost(Post, postId);
     const myComment = checkIfLoggedUserComment(post, req);
 
     let liked = post.likes.find((o) => o.username === req.user.username)

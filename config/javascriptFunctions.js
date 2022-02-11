@@ -1,3 +1,6 @@
+const User = require('../models/User.models');
+const Post = require('../models/Post.models');
+
 const addLike = async (postId, req, res, path) => {
   try {
     const post = await Post.findById(postId).populate('likes');
@@ -42,11 +45,9 @@ const removeNotification = async (postId, req, action) => {
   });
 };
 
-const User = require('../models/User.models');
-
-const checkIfFriend = async (loggedUser) => {
+const checkIfFriend = async (req) => {
   let friendsArray = [];
-  const user = await User.findById(loggedUser._id).populate({
+  const user = await User.findById(req.user._id).populate({
     path: 'friends',
     populate: {
       path: 'posts',
@@ -99,6 +100,19 @@ const findAndPopulateUser = async (User, req) => {
   return user;
 };
 
+const findAndPopulatePost = async (Post, postId) => {
+  const post = await Post.findById(postId)
+    .populate('author likes comments')
+    .populate({
+      path: 'comments',
+      populate: {
+        path: 'author',
+        model: 'User',
+      },
+    });
+  return post;
+};
+
 module.exports = {
   ensureAuthenticated,
   checkIfFriend,
@@ -107,4 +121,5 @@ module.exports = {
   removeNotification,
   addLike,
   checkIfLoggedUserComment,
+  findAndPopulatePost,
 };

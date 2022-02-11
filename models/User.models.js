@@ -23,6 +23,9 @@ const userSchema = new Schema(
       type: String,
       required: [true, 'A password is required'],
     },
+    gravatar: {
+      type: String,
+    },
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     likedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],

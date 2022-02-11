@@ -1,23 +1,18 @@
 const router = require('express').Router();
 const User = require('../models/User.models');
 const secureGravUrl = require('../config/gravatar');
-const checkIfFriend = require('../config/javascriptFunctions');
+// js functions
+const {
+  checkIfFriend,
+  findAndPopulateUser,
+} = require('../config/javascriptFunctions');
 
 router.get('/profile/:userId', async (req, res) => {
   const { userId } = req.params;
   try {
-    const user = await User.findOne(req.user)
-      .populate('posts friends notifications')
-      .populate({
-        path: 'notifications',
-        populate: [
-          { path: 'user', model: 'User' },
-          { path: 'post', model: 'Post' },
-        ],
-      });
+    const user = await findAndPopulateUser(User, req);
     // check if friend
-    const loggedUser = req.user;
-    const friends = await checkIfFriend(loggedUser);
+    const friends = await checkIfFriend(req);
     const friendId = await User.findById(userId);
     let friendStatus;
     if (friends.includes(friendId._id.toString())) {
