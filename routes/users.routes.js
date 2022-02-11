@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const User = require('../models/User.models');
 const secureGravUrl = require('../config/gravatar');
-const checkIsFriend = require('../config/javascript');
+const checkIfFriend = require('../config/javascript/checkIfFriend');
 
 router.get('/profile/:userId', async (req, res) => {
   const { userId } = req.params;
@@ -17,7 +17,7 @@ router.get('/profile/:userId', async (req, res) => {
       });
     // check if friend
     const loggedUser = req.user;
-    const friends = await checkIsFriend(loggedUser);
+    const friends = await checkIfFriend(loggedUser);
     const friendId = await User.findById(userId);
     let friendStatus;
     if (friends.includes(friendId._id.toString())) {

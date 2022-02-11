@@ -1,21 +1,19 @@
 const router = require('express').Router();
 const Post = require('../models/Post.models');
 const User = require('../models/User.models');
-const checkIsFriend = require('../config/javascript');
+// javascript functions
+const ensureAuthenticated = require('../config/javascript/ensureAuthenticated');
+const checkIsFriend = require('../config/javascript/checkIfFriend');
+const findAndPopulateUser = require('../config/javascript/findPopulateUser');
+const addNotification = require('../config/javascript/addNotification');
+const removeNotification = require('../config/javascript/removeNotification');
+const addLike = require('../config/javascript/addLike');
+const checkIfLoggedUserComment = require('../config/javascript/checkIfLoggedUserComment');
 
 router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
   try {
     const otherUsers = await User.find();
-
-    const user = await User.findOne(req.user)
-      .populate('posts friends notifications')
-      .populate({
-        path: 'notifications',
-        populate: [
-          { path: 'user', model: 'User' },
-          { path: 'post', model: 'Post' },
-        ],
-      });
+    const user = await findAndPopulateUser(User, req);
 
     let friendsArray = await checkIsFriend(user);
     friendPosts = await Post.find({
@@ -98,16 +96,7 @@ router.post('/delete/:postId', async (req, res) => {
 router.get('/:postId', async (req, res) => {
   const { postId } = req.params;
   try {
-    const user = await User.findOne(req.user)
-      .populate('posts friends notifications')
-      .populate({
-        path: 'notifications',
-        populate: [
-          { path: 'user', model: 'User' },
-          { path: 'post', model: 'Post' },
-        ],
-      });
-
+    const user = await findPopulateUser(User, req);
     const post = await Post.findById(postId)
       .populate('author likes comments')
       .populate({
@@ -118,22 +107,7 @@ router.get('/:postId', async (req, res) => {
         },
       });
 
-    let myComment;
-    let userComments = post.comments.filter(
-      (comment) => comment.author.username === req.user.username
-    );
-
-    if (post.comments.length > 0) {
-      if (userComments) {
-        userComments.forEach((comment) => {
-          if (comment.author._id.toString() === req.user._id.toString()) {
-            comment.isLoggedUser = 'true';
-          }
-        });
-      }
-    }
-
-    console.log(user.notifications);
+    const myComment = checkIfLoggedUserComment(post, req);
 
     let liked = post.likes.find((o) => o.username === req.user.username)
       ? true
@@ -164,50 +138,6 @@ router.post('/:postId/like', ensureAuthenticated, async (req, res) => {
   await addLike(postId, req, res, path);
 });
 
-async function addLike(postId, req, res, path) {
-  try {
-    const post = await Post.findById(postId).populate('likes');
-    if (post.likes.find((o) => o.username === req.user.username)) {
-      await Post.findByIdAndUpdate(postId, {
-        $pullAll: {
-          likes: [{ _id: req.user._id }],
-        },
-      });
-      await removeNotification(postId, req, 'liked');
-      liked = false;
-    } else {
-      await Post.findByIdAndUpdate(postId, {
-        $push: { likes: req.user },
-      });
-      await addNotification(postId, req, 'liked');
-      liked = true;
-    }
-    res.redirect(path);
-  } catch (err) {
-    console.log(err.message);
-  }
-}
-
-async function addNotification(postId, req, action) {
-  let icon = action === 'liked' ? 'like.png' : 'notification.png';
-  const post = await Post.findById(postId).populate('author');
-  const userNotifications = await User.findByIdAndUpdate(post.author._id, {
-    $push: {
-      notifications: { user: req.user, action: action, post: post, icon: icon },
-    },
-  });
-}
-
-async function removeNotification(postId, req, action) {
-  let icon = action === 'liked' ? 'like.png' : 'notification.png';
-  const post = await Post.findById(postId).populate('author');
-  const userNotifications = await User.findByIdAndUpdate(post.author._id, {
-    $pull: {
-      notifications: { user: req.user, action: action, post: post, icon: icon },
-    },
-  });
-}
-
 // post req add comment
 router.post('/:postId/comment', ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
@@ -232,7 +162,6 @@ router.post('/:postId/comment', ensureAuthenticated, async (req, res) => {
 router.post('/:postId/:commentId', async (req, res) => {
   const { postId, commentId } = req.params;
   try {
-    const post = await Post.findById(postId);
     await Post.findByIdAndUpdate(postId, {
       $pull: {
         comments: { _id: commentId },
@@ -244,13 +173,5 @@ router.post('/:postId/:commentId', async (req, res) => {
     console.log(err);
   }
 });
-
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  } else {
-    res.redirect('/please-login');
-  }
-}
 
 module.exports = router;

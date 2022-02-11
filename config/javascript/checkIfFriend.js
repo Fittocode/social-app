@@ -1,4 +1,4 @@
-const User = require('../models/User.models');
+const User = require('../../models/User.models');
 
 const checkIfFriend = async (loggedUser) => {
   let friendsArray = [];
