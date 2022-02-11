@@ -133,6 +133,8 @@ router.get('/:postId', async (req, res) => {
       }
     }
 
+    console.log(user.notifications);
+
     let liked = post.likes.find((o) => o.username === req.user.username)
       ? true
       : false;

@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const User = require('../models/User.models');
+const secureGravUrl = require('../config/gravatar');
 const checkIsFriend = require('../config/javascript');
 
 router.get('/profile/:userId', async (req, res) => {
@@ -31,6 +32,7 @@ router.get('/profile/:userId', async (req, res) => {
 
     res.render('users/publicUserProfile', {
       userLogged: req.user,
+      gravatar: secureGravUrl(profile, '200'),
       notifications: user.notifications.reverse(),
       profile: profile,
       posts: posts,

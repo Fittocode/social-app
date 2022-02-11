@@ -5,6 +5,7 @@ const app = express();
 //middleware config
 require('./config/index')(app, hbs);
 require('./config/passport')(app);
+// require('./config/gravatar');
 
 // connect to MongoDB
 const connectDB = require('./db/index');
