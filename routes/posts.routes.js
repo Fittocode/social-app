@@ -2,20 +2,22 @@ const router = require('express').Router();
 const Post = require('../models/Post.models');
 const User = require('../models/User.models');
 // javascript functions
-const ensureAuthenticated = require('../config/javascript/ensureAuthenticated');
-const checkIsFriend = require('../config/javascript/checkIfFriend');
-const findAndPopulateUser = require('../config/javascript/findPopulateUser');
-const addNotification = require('../config/javascript/addNotification');
-const removeNotification = require('../config/javascript/removeNotification');
-const addLike = require('../config/javascript/addLike');
-const checkIfLoggedUserComment = require('../config/javascript/checkIfLoggedUserComment');
+const {
+  ensureAuthenticated,
+  checkIfFriend,
+  findAndPopulateUser,
+  addNotification,
+  removeNotification,
+  addLike,
+  checkIfLoggedUserComment,
+} = require('../config/javascriptFunctions');
 
 router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
   try {
     const otherUsers = await User.find();
     const user = await findAndPopulateUser(User, req);
 
-    let friendsArray = await checkIsFriend(user);
+    let friendsArray = await checkIfFriend(user);
     friendPosts = await Post.find({
       author: { $in: friendsArray },
     }).populate('author');
@@ -96,7 +98,7 @@ router.post('/delete/:postId', async (req, res) => {
 router.get('/:postId', async (req, res) => {
   const { postId } = req.params;
   try {
-    const user = await findPopulateUser(User, req);
+    const user = await findAndPopulateUser(User, req);
     const post = await Post.findById(postId)
       .populate('author likes comments')
       .populate({

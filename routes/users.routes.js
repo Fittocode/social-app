@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const User = require('../models/User.models');
 const secureGravUrl = require('../config/gravatar');
-const checkIfFriend = require('../config/javascript/checkIfFriend');
+const checkIfFriend = require('../config/javascriptFunctions');
 
 router.get('/profile/:userId', async (req, res) => {
   const { userId } = req.params;
