@@ -1,5 +1,5 @@
 
-<div class="card newsfeed-card mt-4" onclick="location.href='/{{this._id}}';">
+<div class="card newsfeed-card mt-4">
     <div class="card-body">
         <img src="{{this.author.gravatar}}" alt="" class="tiny-gravatar"><a href="/profile/{{this.author._id}}">{{this.author.username}}</a></p>
         <div class="card-text">
@@ -10,7 +10,7 @@
                         <p class="likes-no">{{this.likes.length}}</p>
                     </div>
                     <div class="col-1 g-0">
-                        <form action="/newsfeed/{{this._id}}" method="post">
+                        <form action="/newsfeed/{{this._id}}" method="post" data-post-id="{{this._id}}">
                             {{#if this.likes}}
                             <button class="unlike-btn" type="submit">
                                 <img class="heart-img" src="/images/like.png" alt="">
@@ -22,6 +22,22 @@
                             </button>
                             {{/unless}}
                         </form>
+                        <script>
+                            const likeForm = document.forms[0];
+                            const heartImage = document.querySelector('.heart-img');
+                            likeForm.addEventListener('submit', async (event) => {
+                                event.preventDefault();
+                                const response = await fetch(`/newsfeed/${likeForm.dataset.postId}`, {
+                                    method: 'POST'
+                                });
+                                const post = await response.json();
+                                if (post.likes.length === 0) {
+                                    heartImage.src = 'http://localhost:3000/images/tiny-empty-heart.png';
+                                } else {
+                                    heartImage.src = 'http://localhost:3000/images/like.png';
+                                }
+                            });
+                        </script>
                         </div>
                     <div class="col-1">
                         <p class="comments-no">{{this.comments.length}}</p>

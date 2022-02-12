@@ -8,7 +8,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 const User = require('../models/User.models');
 
-module.exports = (app) => {
+function configurePassport(app) {
   app.use(flash());
 
   app.use(
@@ -18,7 +18,7 @@ module.exports = (app) => {
       saveUninitialized: true,
       cookie: { maxAge: 3600000 },
       store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI,
+        mongoUrl: 'process.env.MONGODB_URI',
         ttl: 60 * 60 * 24,
       }),
     })
@@ -62,4 +62,6 @@ module.exports = (app) => {
     )
   );
   app.use(passport.session());
-};
+}
+
+module.exports = configurePassport;

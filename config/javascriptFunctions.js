@@ -19,7 +19,7 @@ const addLike = async (postId, req, res, path) => {
       await addPostNotification(postId, req, 'liked');
       liked = true;
     }
-    res.redirect(path);
+    res.send(post);
   } catch (err) {
     console.log(err.message);
   }
