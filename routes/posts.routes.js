@@ -17,9 +17,7 @@ const {
 router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
   try {
     const following = await checkIfFollowing(req);
-    console.log(following);
     following.push(req.user._id.toString());
-    console.log(following);
     const otherUsers = await User.find({
       _id: {
         $nin: [...following],
@@ -154,7 +152,7 @@ router.post('/:postId/comment', ensureAuthenticated, async (req, res) => {
         },
       },
     });
-    addPostNotification(postId, req, 'commented on');
+    // await addPostNotification(postId, req, 'commented on');
     res.redirect(`/${postId}`);
   } catch (err) {
     console.log(err.message);
@@ -170,7 +168,7 @@ router.post('/:postId/:commentId', async (req, res) => {
         comments: { _id: commentId },
       },
     });
-    removePostNotification(postId, req, 'commented on');
+    await removePostNotification(postId, req, 'commented on');
     res.redirect(`/${postId}`);
   } catch (err) {
     console.log(err);

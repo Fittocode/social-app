@@ -118,6 +118,10 @@ a {
   width: 20px;
 }
 
+.profile-gravatar {
+  border-radius: 50%;
+}
+
 .tiny-gravatar {
   margin-right: 0.5rem;
   height: 40px;

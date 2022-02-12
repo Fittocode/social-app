@@ -28,6 +28,16 @@ const addLike = async (postId, req, res, path) => {
 const addPostNotification = async (postId, req, action) => {
   let icon = action === 'liked' ? 'like.png' : 'notification.png';
   const post = await Post.findById(postId).populate('author');
+  const user = await User.findById(post.author._id).populate({
+    path: 'notifications',
+    populate: {
+      path: 'form',
+      populate: {
+        path: 'post',
+        model: 'Post',
+      },
+    },
+  });
   await User.findByIdAndUpdate(post.author._id, {
     $push: {
       notifications: {
@@ -38,6 +48,7 @@ const addPostNotification = async (postId, req, action) => {
       },
     },
   });
+  console.log(user.notifications);
 };
 
 const removePostNotification = async (postId, req, action) => {
@@ -89,7 +100,6 @@ const checkIfLoggedUserComment = (post, req) => {
   let userComments = post.comments.filter(
     (comment) => comment.author.username === req.user.username
   );
-
   if (post.comments.length > 0) {
     if (userComments) {
       userComments.forEach((comment) => {
@@ -117,7 +127,13 @@ const findAndPopulateUser = async (User, req) => {
       path: 'notifications',
       populate: [
         { path: 'user', model: 'User' },
-        { path: 'post', model: 'Post' },
+        // {
+        //   path: 'form',
+        //   populate: {
+        //     path: 'post',
+        //     model: 'Post',
+        //   },
+        // },
       ],
     });
   return user;

@@ -1,35 +1,42 @@
 const express = require('express');
-const hbs = require('hbs');
 const app = express();
+const path = require('path');
+const hbs = require('hbs');
+const cookieParser = require('cookie-parser');
+
+const index = require('./routes/index.routes');
+const auth = require('./routes/auth.routes');
+const posts = require('./routes/posts.routes');
+const users = require('./routes/users.routes');
+const notifications = require('./routes/notifications.routes');
 
 //middleware config
-require('./config/index')(app, hbs);
+const { configParsers, configTemplating } = require('./config/index');
+configParsers(app, cookieParser);
+configTemplating(app, path, hbs);
+
 require('./config/passport')(app);
-// require('./config/gravatar');
 
 // connect to MongoDB
 const connectDB = require('./db/index');
 connectDB();
 
 // Routes
-const index = require('./routes/index.routes');
 app.use('/', index);
 
-const auth = require('./routes/auth.routes');
 app.use('/', auth);
 
-const posts = require('./routes/posts.routes');
 app.use('/', posts);
 
-const users = require('./routes/users.routes');
 app.use('/', users);
 
-const notifications = require('./routes/notifications.routes');
 app.use('/', notifications);
 
 require('./error-handling')(app);
 
+const PORT = 3000;
+
 // local host 3000 listening
-app.listen(3000, () => {
-  console.log('listening...');
+app.listen(PORT, () => {
+  console.log(`listening on port localhost:${PORT}...`);
 });
