@@ -2,7 +2,7 @@
     <div class="card mt-4">
         <div class="card-body" style="padding-bottom: 0px">
             <h3 class="card-title">{{post.title}}</h3>
-                <p>By <a href="/profile/{{post.author._id}}">{{post.author.username}}</a></p>
+                <img src="{{post.author.gravatar}}" alt="" class="tiny-gravatar"><a href="/profile/{{post.author._id}}">{{post.author.username}}</a></p>
             <div class="card-text mb-2">
                 <p>{{post.content}}</p>
             </div>
@@ -46,16 +46,25 @@
             </div>
             <div class="list-group">
                 {{#each post.comments}}
-                <div class="list-group grey-comment-box">
-                        <div class="d-flex w-100 justify-content-between">
-                            <a href="/profile/{{this.author._id}}" class="comment-name"><p class="mb-1 comment-name">{{this.author.username}}</p></a>
-                            {{#if this.isLoggedUser}}
-                                <form action="/{{../post._id}}/{{this._id}}" method="post">
-                                    <button type="submit" class="btn x-btn">x</button>
-                                </form>
-                            {{/if}}
+                <div class="container-fluid">
+                    <div class="row no-gutters">
+                        <div class="col-1">
+                            <img src="{{this.author.gravatar}}" alt="" class="tiny-gravatar">
                         </div>
-                        <p class="mb-1">{{this.content}}</p>
+                        <div class="col-8 g-0">
+                            <div class="list-group grey-comment-box">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <a href="/profile/{{this.author._id}}" class="comment-name"><p class="mb-1 comment-name">{{this.author.username}}</p></a>
+                                    {{#if this.isLoggedUser}}
+                                        <form action="/{{../post._id}}/{{this._id}}" method="post">
+                                            <button type="submit" class="btn x-btn">x</button>
+                                        </form>
+                                    {{/if}}
+                                </div>
+                                <p class="mb-1">{{this.content}}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {{/each}}
             </div>
