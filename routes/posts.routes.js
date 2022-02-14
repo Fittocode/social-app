@@ -31,7 +31,7 @@ router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
       author: { $in: usersFollowingArray },
     }).populate('author');
 
-    console.log(user.notifications);
+    console.log(user.username);
     res.render('posts/newsfeed', {
       otherUsers: otherUsers,
       userLogged: user,

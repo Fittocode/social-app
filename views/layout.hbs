@@ -46,12 +46,15 @@
                     <div class="card newsfeed-card" onclick="location.href='/{{this.post._id}}';">
                       <div class="card-body">
                         <img class="notification-icon" src="/images/{{this.icon}}" alt=""> 
-                        <b>{{this.user.username}}</b> 
+                        {{#ifCond this.user.username ../userLogged.username}}
+                          You
+                        {{else}}
+                          <b>{{this.user.username}}</b> 
+                        {{/ifCond}}
                           {{this.action}} your post <i>{{this.post.title}}</i>
                       </div>
                     </div>
-                  {{/if}}
-                  {{#if follow}}
+                  {{else}}
                     <div class="card newsfeed-card" onclick="location.href='/profile/{{this.user._id}}';">
                       <div class="card-body">
                         <img class="notification-icon" src="/images/{{this.icon}}" alt=""> 
