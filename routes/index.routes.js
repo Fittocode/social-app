@@ -1,9 +1,7 @@
 const router = require('express').Router();
+const { ensureAuthenticated } = require('../config/javascriptFunctions');
 
-router.get('/', (req, res) => {
-  if (req.user) {
-    res.redirect('/newsfeed');
-  }
+router.get('/', ensureAuthenticated, (req, res) => {
   res.render('index');
 });
 

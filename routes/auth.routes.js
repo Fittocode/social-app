@@ -17,7 +17,6 @@ router.get('/user-profile', ensureAuthenticated, async (req, res) => {
   res.render('users/userProfile', {
     userLogged: user,
     gravatar: user.gravatar,
-    notifications: user.notifications.reverse(),
     posts: posts,
   });
 });
@@ -67,7 +66,7 @@ router.post('/signup', async (req, res, next) => {
     console.log('user created');
     await User.findByIdAndUpdate(user._id, {
       $push: {
-        usersFollowed: '6206d02f574d695bd6f5f533',
+        usersFollowed: '620a76d248da310c11c4d5af',
       },
       gravatar: secureGravUrl(user, '200'),
     });

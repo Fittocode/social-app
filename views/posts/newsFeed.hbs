@@ -7,7 +7,7 @@
     </div>
     {{/unless}}
     <div>
-        {{#each posts}}
+        {{#each (reverseArray posts)}}
             {{> postCard }}
         {{/each}}
     </div>

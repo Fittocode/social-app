@@ -31,11 +31,8 @@ const addPostNotification = async (postId, req, action) => {
   const user = await User.findById(post.author._id).populate({
     path: 'notifications',
     populate: {
-      path: 'form',
-      populate: {
-        path: 'post',
-        model: 'Post',
-      },
+      path: 'post',
+      model: 'Post',
     },
   });
   await User.findByIdAndUpdate(post.author._id, {
@@ -43,7 +40,7 @@ const addPostNotification = async (postId, req, action) => {
       notifications: {
         user: req.user,
         action: action,
-        form: { post: post },
+        post: post,
         icon: icon,
       },
     },
@@ -59,7 +56,7 @@ const removePostNotification = async (postId, req, action) => {
       notifications: {
         user: req.user,
         action: action,
-        form: { post: post },
+        post: post,
         icon: icon,
       },
     },
@@ -72,7 +69,7 @@ const addFollowNotification = async (userId, req) => {
       notifications: {
         user: req.user,
         action: 'followed',
-        form: { follow: 'follow' },
+        follow: 'follow',
         icon: 'friend-request-icon.png',
       },
     },
@@ -127,13 +124,10 @@ const findAndPopulateUser = async (User, req) => {
       path: 'notifications',
       populate: [
         { path: 'user', model: 'User' },
-        // {
-        //   path: 'form',
-        //   populate: {
-        //     path: 'post',
-        //     model: 'Post',
-        //   },
-        // },
+        {
+          path: 'post',
+          model: 'Post',
+        },
       ],
     });
   return user;

@@ -24,13 +24,13 @@ router.get('/profile/:userId', async (req, res) => {
     if (userId === req.user._id.toString()) {
       res.redirect('/user-profile');
     }
+
     const profile = await User.findById(userId).populate('posts');
     const posts = profile.posts.reverse();
 
     res.render('users/publicUserProfile', {
-      userLogged: req.user,
+      userLogged: user,
       gravatar: secureGravUrl(profile, '200'),
-      notifications: user.notifications.reverse(),
       profile: profile,
       posts: posts,
       followingStatus: followingStatus,

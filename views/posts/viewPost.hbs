@@ -14,16 +14,16 @@
                         </div>
                         <div class="col-2 g-0">
                             <form action="/{{post._id}}/like" method="post">
-                                    {{#if status}}
-                                    <button class="unlike-btn" type="submit">
-                                        <img class="heart-img" src="/images/like.png" alt="">
-                                    </button>
-                                    {{/if}}
-                                    {{#unless status}}
-                                    <button class="unlike-btn" type="submit">
-                                        <img class="heart-img" src="/images/tiny-empty-heart.png" alt="">
-                                    </button>
-                                    {{/unless}}
+                                {{#if status}}
+                                <button class="unlike-btn" type="submit">
+                                    <img class="heart-img" src="/images/like.png" alt="">
+                                </button>
+                                {{/if}}
+                                {{#unless status}}
+                                <button class="unlike-btn" type="submit">
+                                    <img class="heart-img" src="/images/tiny-empty-heart.png" alt="">
+                                </button>
+                                {{/unless}}
                             </form>
                             </div>
                         <div class="col-8 g-0">

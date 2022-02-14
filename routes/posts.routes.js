@@ -14,6 +14,7 @@ const {
   removePostNotification,
 } = require('../config/javascriptFunctions');
 
+// req get newsfeed
 router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
   try {
     const following = await checkIfFollowing(req);
@@ -30,11 +31,11 @@ router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
       author: { $in: usersFollowingArray },
     }).populate('author');
 
+    console.log(user.notifications);
     res.render('posts/newsfeed', {
       otherUsers: otherUsers,
       userLogged: user,
-      notifications: user.notifications.reverse(),
-      posts: usersFollowingPosts.reverse(),
+      posts: usersFollowingPosts,
       currentPage: req.url,
     });
   } catch (err) {
@@ -115,7 +116,6 @@ router.get('/:postId', async (req, res) => {
       : false;
     res.render('posts/viewPost', {
       userLogged: user,
-      notifications: user.notifications.reverse(),
       post: post,
       status: liked,
       myComment: myComment,
@@ -152,7 +152,7 @@ router.post('/:postId/comment', ensureAuthenticated, async (req, res) => {
         },
       },
     });
-    // await addPostNotification(postId, req, 'commented on');
+    await addPostNotification(postId, req, 'commented on');
     res.redirect(`/${postId}`);
   } catch (err) {
     console.log(err.message);
