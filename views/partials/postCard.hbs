@@ -1,5 +1,5 @@
 
-<div class="card newsfeed-card mt-4" onclick="location.href='/{{this._id}}';">
+<div class="card newsfeed-card mt-4">
     <div class="card-body">
         <img src="{{this.author.gravatar}}" alt="" class="tiny-gravatar"><a href="/profile/{{this.author._id}}">{{this.author.username}}</a></p>
         <div class="card-text">
@@ -10,7 +10,7 @@
                         <p class="likes-no">{{this.likes.length}}</p>
                     </div>
                     <div class="col-1 g-0">
-                        <form action="/newsfeed/{{this._id}}" method="post">
+                        <form action="/newsfeed/{{this._id}}" method="post" id="likeForm">
                             {{#if this.likes}}
                             <button class="unlike-btn" type="submit">
                                 <img class="heart-img" src="/images/like.png" alt="">

@@ -37,6 +37,7 @@ const userSchema = new Schema(
         post: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
         follow: { type: String },
         icon: { type: String },
+        read: { type: Boolean, default: false },
       },
     ],
     slug: {

@@ -25,16 +25,19 @@ router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
       },
     });
     const user = await findAndPopulateUser(User, req);
+    const unreadNotifications = user.notifications.filter(
+      (notification) => notification.read === false
+    );
 
     let usersFollowingArray = await checkIfFollowing(req);
     usersFollowingPosts = await Post.find({
       author: { $in: usersFollowingArray },
     }).populate('author');
 
-    console.log(user.username);
     res.render('posts/newsfeed', {
       otherUsers: otherUsers,
       userLogged: user,
+      notifications: unreadNotifications.length,
       posts: usersFollowingPosts,
       currentPage: req.url,
     });
@@ -97,6 +100,7 @@ router.post('/delete/:postId', async (req, res) => {
   const { postId } = req.params;
   try {
     await Post.findByIdAndDelete(postId);
+    await removePostNotification(postId, req, 'commented on');
     res.redirect('/user-profile');
   } catch (err) {
     console.log(err);
@@ -114,6 +118,13 @@ router.get('/:postId', async (req, res) => {
     let liked = post.likes.find((o) => o.username === req.user.username)
       ? true
       : false;
+
+    // const unreadNotifications = user.notifications.filter(
+    //   (notification) => notification.read === false
+    // );
+
+    // await readPostNotifications(User, postId, req);
+
     res.render('posts/viewPost', {
       userLogged: user,
       post: post,

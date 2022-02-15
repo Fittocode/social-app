@@ -45,7 +45,6 @@ const addPostNotification = async (postId, req, action) => {
       },
     },
   });
-  console.log(user.notifications);
 };
 
 const removePostNotification = async (postId, req, action) => {
@@ -109,6 +108,20 @@ const checkIfLoggedUserComment = (post, req) => {
   return myComment;
 };
 
+// inbox count refers to number of notifications with key value pair, "read: false"
+// user clicks inbox
+// all notifications in inbox turn to 'read: true'
+// inbox count returns to 0
+
+const readPostNotifications = async (User, req) => {
+  const user = await User.findByIdAndUpdate(req.user._id, {
+    $set: { 'notifications.$[].read': true },
+  });
+  return user;
+};
+
+// const returnUnreadNotifications = async (user, req) => {};
+
 const ensureAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
@@ -147,13 +160,14 @@ const findAndPopulatePost = async (Post, postId) => {
 };
 
 module.exports = {
-  ensureAuthenticated,
-  checkIfFollowing,
-  findAndPopulateUser,
-  addPostNotification,
-  addFollowNotification,
-  removePostNotification,
   addLike,
+  addFollowNotification,
+  addPostNotification,
+  checkIfFollowing,
   checkIfLoggedUserComment,
+  ensureAuthenticated,
   findAndPopulatePost,
+  findAndPopulateUser,
+  removePostNotification,
+  readPostNotifications,
 };

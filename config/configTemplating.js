@@ -1,4 +1,5 @@
 const express = require('express');
+const { options } = require('../routes/posts.routes');
 
 const configTemplating = (app, path, hbs) => {
   app.set('views', path.join(__dirname, '..', 'views'));
@@ -11,6 +12,14 @@ const configTemplating = (app, path, hbs) => {
       return options.fn(this);
     } else {
       return options.inverse(this);
+    }
+  });
+  hbs.registerHelper('notRead', function (userLogged, options) {
+    if (
+      userLogged.notifications.read === 'false' &&
+      userLogged.notifications.length > 0
+    ) {
+      return (userLogged.notifications.read === 'false').length;
     }
   });
 };
