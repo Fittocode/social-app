@@ -1,28 +1,46 @@
 // like, unlike in dom and change data in mongodb
 
-const likeButton = document.getElementById('likeButton');
-const likeNo = document.querySelector('.likes-no');
-const heartImage = document.querySelector('.heart-img');
-likeButton.addEventListener('click', async (event) => {
-  event.preventDefault();
-  const response = await fetch(`/like/${likeButton.dataset.postId}`, {
-    method: 'POST',
+const likeButtons = document.querySelectorAll('[data-post-id]');
+console.log(likeButtons);
+const likeNo = document.querySelectorAll('.likes-no');
+console.log(likeNo);
+const heartImage = document.querySelectorAll('.heart-img');
+let number = 0;
+likeButtons.forEach((button, i) => {
+  button.addEventListener('click', async () => {
+    console.log('tap');
+    const response = await fetch(`/like/${button.dataset.postId}`, {
+      method: 'POST',
+    });
+    const post = await response.json();
+    if (post[1] === false) {
+      likeNo[i].textContent--;
+      heartImage[i].src = '/images/tiny-empty-heart.png';
+    } else {
+      likeNo[i].textContent++;
+      heartImage[i].src = '/images/like.png';
+    }
   });
-  const post = await response.json();
-  if (post[1] === false) {
-    likeNo.textContent--;
-    heartImage.src = '/images/tiny-empty-heart.png';
-  } else {
-    likeNo.textContent++;
-    heartImage.src = '/images/like.png';
-  }
 });
+
+// button.addEventListener('click', async () => {
+//   const response = await fetch(`/like/${button.dataset.postId}`, {
+//     method: 'POST',
+//   });
+//   const post = await response.json();
+//   if (post[1] === false) {
+//     likeNo.textContent--;
+//     heartImage.src = '/images/tiny-empty-heart.png';
+//   } else {
+//     likeNo.textContent++;
+//     heartImage.src = '/images/like.png';
+//   }
+// });
 
 // change dom to remove notification number
 const inbox = document.getElementById('inboxButton');
 const notificationNo = document.getElementById('notificationNo');
-inbox.addEventListener('click', async (event) => {
-  event.preventDefault();
+inbox.addEventListener('click', async () => {
   const response = await fetch(`/inbox/${inbox.dataset.userId}`, {
     method: 'POST',
   });

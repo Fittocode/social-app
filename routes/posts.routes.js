@@ -31,13 +31,28 @@ router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
     let usersFollowingArray = await checkIfFollowing(req);
     usersFollowingPosts = await Post.find({
       author: { $in: usersFollowingArray },
-    }).populate('author');
+    }).populate('author likes');
+
+    let postLikes = [];
+
+    usersFollowingPosts.forEach((post, index) => {
+      post.likes.some((like) => like.username === req.user.username)
+        ? postLikes.push(true)
+        : postLikes.push(false);
+    });
+
+    const postArray = usersFollowingPosts.map(function (item, i) {
+      return {
+        postSchema: usersFollowingPosts[i],
+        loggedUserLiked: postLikes[i],
+      };
+    });
 
     res.render('posts/newsfeed', {
       otherUsers: otherUsers,
       userLogged: user,
       notifications: unreadNotifications.length,
-      posts: usersFollowingPosts,
+      postArray: postArray,
       currentPage: req.url,
     });
   } catch (err) {
@@ -113,24 +128,17 @@ router.get('/view-post/:postId', async (req, res) => {
     const user = await findAndPopulateUser(User, req);
     const unreadNotifications = returnUnreadNotifications(user);
     const post = await findAndPopulatePost(Post, postId);
-    const myComment = checkIfLoggedUserComment(post, req);
+    checkIfLoggedUserComment(post, req);
 
     let liked = post.likes.find((o) => o.username === req.user.username)
       ? true
       : false;
-
-    // const unreadNotifications = user.notifications.filter(
-    //   (notification) => notification.read === false
-    // );
-
-    // await readPostNotifications(User, postId, req);
 
     res.render('posts/viewPost', {
       userLogged: user,
       notifications: unreadNotifications.length,
       post: post,
       status: liked,
-      myComment: myComment,
     });
   } catch (err) {
     console.log(err.message);
@@ -146,10 +154,9 @@ router.post('/newsfeed/:postId', ensureAuthenticated, async (req, res) => {
 
 // post req add like from viewPost
 router.post('/like/:postId', ensureAuthenticated, async (req, res) => {
+  const { postId } = req.params;
   try {
-    const { postId } = req.params;
     const post = await addLike(postId, req, res);
-    console.log(post);
     res.send(post);
   } catch (err) {
     console.log(err.message);

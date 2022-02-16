@@ -1,13 +1,13 @@
 
 <div class="container">
     <h2>Newsfeed</h2>
-    {{#unless posts}}
+    {{#unless postArray}}
     <div class="alert alert-warning" role="alert">
         Follow users to see their posts!
     </div>
     {{/unless}}
     <div>
-        {{#each (reverseArray posts)}}
+        {{#each (reverseArray postArray)}}
             {{> postCard }}
         {{/each}}
     </div>

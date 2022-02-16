@@ -1,7 +1,7 @@
 const User = require('../models/User.models');
 const Post = require('../models/Post.models');
 
-const addLike = async (postId, req, res, path) => {
+const addLike = async (postId, req) => {
   try {
     let post = await Post.findById(postId).populate('likes');
     if (post.likes.find((o) => o.username === req.user.username)) {
@@ -100,7 +100,7 @@ const checkIfLoggedUserComment = (post, req) => {
     if (userComments) {
       userComments.forEach((comment) => {
         if (comment.author._id.toString() === req.user._id.toString()) {
-          comment.isLoggedUser = 'true';
+          comment.isLoggedUser = true;
         }
       });
     }

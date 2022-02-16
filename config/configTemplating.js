@@ -14,12 +14,19 @@ const configTemplating = (app, path, hbs) => {
       return options.inverse(this);
     }
   });
-  hbs.registerHelper('notRead', function (userLogged, options) {
+  hbs.registerHelper('notRead', function (userLogged) {
     if (
       userLogged.notifications.read === 'false' &&
       userLogged.notifications.length > 0
     ) {
       return (userLogged.notifications.read === 'false').length;
+    }
+  });
+  hbs.registerHelper('ifLiked', function (loggedUserLiked, options) {
+    if (loggedUserLiked === true) {
+      return options.fn(this);
+    } else {
+      return options.inverse(this);
     }
   });
 };
