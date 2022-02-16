@@ -120,7 +120,11 @@ const readPostNotifications = async (User, req) => {
   return user;
 };
 
-// const returnUnreadNotifications = async (user, req) => {};
+const returnUnreadNotifications = (user) => {
+  return user.notifications.filter(
+    (notification) => notification.read === false
+  );
+};
 
 const ensureAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -170,4 +174,5 @@ module.exports = {
   findAndPopulateUser,
   removePostNotification,
   readPostNotifications,
+  returnUnreadNotifications,
 };

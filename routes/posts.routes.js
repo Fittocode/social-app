@@ -12,6 +12,7 @@ const {
   findAndPopulateUser,
   findAndPopulatePost,
   removePostNotification,
+  returnUnreadNotifications,
 } = require('../config/javascriptFunctions');
 
 // req get newsfeed
@@ -25,9 +26,7 @@ router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
       },
     });
     const user = await findAndPopulateUser(User, req);
-    const unreadNotifications = user.notifications.filter(
-      (notification) => notification.read === false
-    );
+    const unreadNotifications = returnUnreadNotifications(user);
 
     let usersFollowingArray = await checkIfFollowing(req);
     usersFollowingPosts = await Post.find({
@@ -112,6 +111,7 @@ router.get('/view-post/:postId', async (req, res) => {
   const { postId } = req.params;
   try {
     const user = await findAndPopulateUser(User, req);
+    const unreadNotifications = returnUnreadNotifications(user);
     const post = await findAndPopulatePost(Post, postId);
     const myComment = checkIfLoggedUserComment(post, req);
 
@@ -127,6 +127,7 @@ router.get('/view-post/:postId', async (req, res) => {
 
     res.render('posts/viewPost', {
       userLogged: user,
+      notifications: unreadNotifications.length,
       post: post,
       status: liked,
       myComment: myComment,

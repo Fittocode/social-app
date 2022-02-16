@@ -23,13 +23,15 @@
 //   console.log(notificationNo.textContent);
 // });
 
+// change dom to remove notification number
 const inbox = document.getElementById('inboxButton');
-console.log(inbox.dataset);
+const notificationNo = document.getElementById('notificationNo');
 inbox.addEventListener('click', async (event) => {
   event.preventDefault();
   const response = await fetch(`/inbox/${inbox.dataset.userId}`, {
     method: 'POST',
   });
   const user = await response.json();
+  notificationNo.textContent = '';
   console.log(user);
 });

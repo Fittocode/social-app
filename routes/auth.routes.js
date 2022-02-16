@@ -9,13 +9,16 @@ const mongoose = require('mongoose');
 const {
   findAndPopulateUser,
   ensureAuthenticated,
+  returnUnreadNotifications,
 } = require('../config/javascriptFunctions');
 
 router.get('/user-profile', ensureAuthenticated, async (req, res) => {
   const user = await findAndPopulateUser(User, req);
+  const unreadNotifications = returnUnreadNotifications(user);
   const posts = await user.posts.reverse();
   res.render('users/userProfile', {
     userLogged: user,
+    notifications: unreadNotifications.length,
     gravatar: user.gravatar,
     posts: posts,
   });
