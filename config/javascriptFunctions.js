@@ -3,7 +3,7 @@ const Post = require('../models/Post.models');
 
 const addLike = async (postId, req, res, path) => {
   try {
-    const post = await Post.findById(postId).populate('likes');
+    let post = await Post.findById(postId).populate('likes');
     if (post.likes.find((o) => o.username === req.user.username)) {
       await Post.findByIdAndUpdate(postId, {
         $pullAll: {
@@ -19,7 +19,7 @@ const addLike = async (postId, req, res, path) => {
       await addPostNotification(postId, req, 'liked');
       liked = true;
     }
-    res.redirect(path);
+    return [post, liked];
   } catch (err) {
     console.log(err.message);
   }
@@ -107,11 +107,6 @@ const checkIfLoggedUserComment = (post, req) => {
   }
   return myComment;
 };
-
-// inbox count refers to number of notifications with key value pair, "read: false"
-// user clicks inbox
-// all notifications in inbox turn to 'read: true'
-// inbox count returns to 0
 
 const readPostNotifications = async (User, req) => {
   const user = await User.findByIdAndUpdate(req.user._id, {

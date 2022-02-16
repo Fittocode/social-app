@@ -146,9 +146,14 @@ router.post('/newsfeed/:postId', ensureAuthenticated, async (req, res) => {
 
 // post req add like from viewPost
 router.post('/like/:postId', ensureAuthenticated, async (req, res) => {
-  const { postId } = req.params;
-  const path = `/view-post/${postId}`;
-  await addLike(postId, req, res, path);
+  try {
+    const { postId } = req.params;
+    const post = await addLike(postId, req, res);
+    console.log(post);
+    res.send(post);
+  } catch (err) {
+    console.log(err.message);
+  }
 });
 
 // post req add comment

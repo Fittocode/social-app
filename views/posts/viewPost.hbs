@@ -13,19 +13,15 @@
                             <p class="likes-no">{{post.likes.length}}</p>
                         </div>
                         <div class="col-2 g-0">
-                            <form action="/like/{{post._id}}" method="post">
+                            <button id='likeButton' data-post-id="{{post._id}}" class="unlike-btn" type="submit">
                                 {{#if status}}
-                                <button class="unlike-btn" type="submit">
                                     <img class="heart-img" src="/images/like.png" alt="">
-                                </button>
                                 {{/if}}
                                 {{#unless status}}
-                                <button class="unlike-btn" type="submit">
                                     <img class="heart-img" src="/images/tiny-empty-heart.png" alt="">
-                                </button>
                                 {{/unless}}
-                            </form>
-                            </div>
+                            </button>
+                        </div>
                         <div class="col-8 g-0">
                         </div>
                     </div>

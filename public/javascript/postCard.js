@@ -1,27 +1,22 @@
-// const likeForm = document.getElementById('likeForm');
-// console.log(likeForm);
-// const heartImage = document.querySelector('.heart-img');
-// likeForm.addEventListener('click', async (event) => {
-//   event.preventDefault();
-//   const response = await fetch(`/newsfeed/${likeForm.dataset.postId}`, {
-//     method: 'POST',
-//   });
-//   const post = await response.json();
-//   console.log(post);
-//   if (post.likes.length === 0) {
-//     heartImage.src = '/images/tiny-empty-heart.png';
-//   } else {
-//     heartImage.src = '/images/like.png';
-//   }
-// });
+// like, unlike in dom and change data in mongodb
 
-// const notificationNo = document.getElementById('notificationNo');
-// const notificationInbox = document.getElementById('inbox');
-
-// notificationInbox.addEventListener('click', () => {
-//   notificationNo.textContent = '';
-//   console.log(notificationNo.textContent);
-// });
+const likeButton = document.getElementById('likeButton');
+const likeNo = document.querySelector('.likes-no');
+const heartImage = document.querySelector('.heart-img');
+likeButton.addEventListener('click', async (event) => {
+  event.preventDefault();
+  const response = await fetch(`/like/${likeButton.dataset.postId}`, {
+    method: 'POST',
+  });
+  const post = await response.json();
+  if (post[1] === false) {
+    likeNo.textContent--;
+    heartImage.src = '/images/tiny-empty-heart.png';
+  } else {
+    likeNo.textContent++;
+    heartImage.src = '/images/like.png';
+  }
+});
 
 // change dom to remove notification number
 const inbox = document.getElementById('inboxButton');
@@ -33,5 +28,6 @@ inbox.addEventListener('click', async (event) => {
   });
   const user = await response.json();
   notificationNo.textContent = '';
-  console.log(user);
 });
+
+//
