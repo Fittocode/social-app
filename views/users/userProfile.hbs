@@ -43,12 +43,12 @@
                 </div>
             </div>
             <div class="col-5 g-0">
-                <a href="/{{userLogged._id}}/add-post" class="btn btn-success">Add Post</a>
+                <a href="/add-post/{{userLogged._id}}" class="btn btn-success">Add Post</a>
             </div>
         </div>
     </div>
     {{#each posts}}
-    <div class="card newsfeed-card mt-4" onclick="location.href='/{{this._id}}';">
+    <div class="card newsfeed-card mt-4" onclick="location.href='/view-post/{{this._id}}';">
         <div class="card-body">
             <h3 class="card-title">{{this.title}}</h3>
             <div class="card-text mb-2">

@@ -13,7 +13,7 @@
                             <p class="likes-no">{{post.likes.length}}</p>
                         </div>
                         <div class="col-2 g-0">
-                            <form action="/{{post._id}}/like" method="post">
+                            <form action="/like/{{post._id}}" method="post">
                                 {{#if status}}
                                 <button class="unlike-btn" type="submit">
                                     <img class="heart-img" src="/images/like.png" alt="">
@@ -33,7 +33,7 @@
             </div>
             </p>
             <div class="collapse.show" id="collapseExample">
-                <form action="/{{post._id}}/comment" method="post" class="form-padding">
+                <form action="/comment/{{post._id}}" method="post" class="form-padding">
                     <div class="form-group comment-box">
                         <label for="content" name='content'></label>
                         <textarea name="content" id="content" placeholder="Write a comment..." class="form-control"></textarea>
@@ -56,7 +56,7 @@
                                 <div class="d-flex w-100 justify-content-between">
                                     <a href="/profile/{{this.author._id}}" class="comment-name"><p class="mb-1 comment-name">{{this.author.username}}</p></a>
                                     {{#if this.isLoggedUser}}
-                                        <form action="/{{../post._id}}/{{this._id}}" method="post">
+                                        <form action="/delete/{{../post._id}}/{{this._id}}" method="post">
                                             <button type="submit" class="btn x-btn">x</button>
                                         </form>
                                     {{/if}}

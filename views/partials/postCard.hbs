@@ -1,5 +1,5 @@
 
-<div class="card newsfeed-card mt-4">
+<div class="card newsfeed-card mt-4" onclick="location.href='/view-post/{{this._id}}';">
     <div class="card-body">
         <img src="{{this.author.gravatar}}" alt="" class="tiny-gravatar"><a href="/profile/{{this.author._id}}">{{this.author.username}}</a></p>
         <div class="card-text">

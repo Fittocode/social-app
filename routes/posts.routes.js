@@ -48,12 +48,12 @@ router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
 });
 
 // get req add post page
-router.get('/:userId/add-post', (req, res) => {
+router.get('/add-post/:userId', (req, res) => {
   res.render('posts/addPost', { userLogged: req.user });
 });
 
 // post req add post
-router.post('/:userId/add-post', async (req, res) => {
+router.post('/add-post/:userId', async (req, res) => {
   const { userId } = req.params;
   const { title, content } = req.body;
 
@@ -108,7 +108,7 @@ router.post('/delete/:postId', async (req, res) => {
 });
 
 // get req post details, comments, etc
-router.get('/:postId', async (req, res) => {
+router.get('/view-post/:postId', async (req, res) => {
   const { postId } = req.params;
   try {
     const user = await findAndPopulateUser(User, req);
@@ -144,14 +144,14 @@ router.post('/newsfeed/:postId', ensureAuthenticated, async (req, res) => {
 });
 
 // post req add like from viewPost
-router.post('/:postId/like', ensureAuthenticated, async (req, res) => {
+router.post('/like/:postId', ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
   const path = `/${postId}`;
   await addLike(postId, req, res, path);
 });
 
 // post req add comment
-router.post('/:postId/comment', ensureAuthenticated, async (req, res) => {
+router.post('/comment/:postId', ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
   const { content } = req.body;
   try {
@@ -171,7 +171,7 @@ router.post('/:postId/comment', ensureAuthenticated, async (req, res) => {
 });
 
 // post req delete comment
-router.post('/:postId/:commentId', async (req, res) => {
+router.post('/delete/:postId/:commentId/', async (req, res) => {
   const { postId, commentId } = req.params;
   try {
     await Post.findByIdAndUpdate(postId, {

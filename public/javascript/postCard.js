@@ -27,7 +27,7 @@ const inbox = document.getElementById('inboxButton');
 console.log(inbox.dataset);
 inbox.addEventListener('click', async (event) => {
   event.preventDefault();
-  const response = await fetch(`${inbox.dataset.userId}/inbox`, {
+  const response = await fetch(`/inbox/${inbox.dataset.userId}`, {
     method: 'POST',
   });
   const user = await response.json();
