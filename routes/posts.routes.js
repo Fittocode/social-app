@@ -146,7 +146,7 @@ router.post('/newsfeed/:postId', ensureAuthenticated, async (req, res) => {
 // post req add like from viewPost
 router.post('/like/:postId', ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
-  const path = `/${postId}`;
+  const path = `/view-post/${postId}`;
   await addLike(postId, req, res, path);
 });
 
@@ -164,7 +164,7 @@ router.post('/comment/:postId', ensureAuthenticated, async (req, res) => {
       },
     });
     await addPostNotification(postId, req, 'commented on');
-    res.redirect(`/${postId}`);
+    res.redirect(`/view-post/${postId}`);
   } catch (err) {
     console.log(err.message);
   }
@@ -180,7 +180,7 @@ router.post('/delete/:postId/:commentId/', async (req, res) => {
       },
     });
     await removePostNotification(postId, req, 'commented on');
-    res.redirect(`/${postId}`);
+    res.redirect(`/view-post/${postId}`);
   } catch (err) {
     console.log(err);
   }

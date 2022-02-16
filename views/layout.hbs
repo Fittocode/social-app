@@ -43,7 +43,7 @@
             <div class="offcanvas-body">
               {{#each (reverseArray userLogged.notifications)}}
                   {{#if post}}
-                    <div class="card newsfeed-card" onclick="location.href='/{{this.post._id}}';">
+                    <div class="card newsfeed-card" onclick="location.href='/view-post/{{this.post._id}}';">
                       <div class="card-body">
                         <img class="notification-icon" src="/images/{{this.icon}}" alt=""> 
                         {{#ifCond this.user.username ../userLogged.username}}
