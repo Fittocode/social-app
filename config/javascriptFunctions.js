@@ -25,6 +25,26 @@ const addLike = async (postId, req) => {
   }
 };
 
+const addComment = async (postId, content, req) => {
+  await Post.findByIdAndUpdate(postId, {
+    $push: {
+      comments: {
+        author: req.user,
+        content: content,
+      },
+    },
+  });
+  await addPostNotification(postId, req, 'commented on');
+  const post = await Post.findById(postId).populate({
+    path: 'comments',
+    populate: {
+      path: 'author',
+      model: 'User',
+    },
+  });
+  return post;
+};
+
 const addPostNotification = async (postId, req, action) => {
   let icon = action === 'liked' ? 'like.png' : 'notification.png';
   const post = await Post.findById(postId).populate('author');
@@ -197,6 +217,7 @@ const findAndPopulatePost = async (Post, postId) => {
 module.exports = {
   addFollowNotification,
   addLike,
+  addComment,
   addPostNotification,
   checkIfLoggedUserComment,
   checkIfPostLikedByUser,

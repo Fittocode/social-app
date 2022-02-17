@@ -16,10 +16,9 @@
                             <button data-post-id="{{post._id}}" class="likeButton unlike-btn">
                                 {{#if status}}
                                     <img class="heart-img" src="/images/like.png" alt="">
-                                {{/if}}
-                                {{#unless status}}
+                                    {{else}}
                                     <img class="heart-img" src="/images/tiny-empty-heart.png" alt="">
-                                {{/unless}}
+                                {{/if}}
                             </button>
                         </div>
                         <div class="col-8 g-0">
@@ -29,7 +28,7 @@
             </div>
             </p>
             <div class="collapse.show" id="collapseExample">
-                <form action="/comment/{{post._id}}" method="post" class="form-padding">
+                <form action="/comment/{{post._id}}" id="commentForm" method="post" class="form-padding">
                     <div class="form-group comment-box">
                         <label for="content" name='content'></label>
                         <textarea name="content" id="content" placeholder="Write a comment..." class="form-control"></textarea>

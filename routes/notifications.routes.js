@@ -5,11 +5,7 @@ const {
   ensureAuthenticated,
 } = require('../config/javascriptFunctions');
 
-router.get('/', (req, res) => {
-  res.render('index');
-});
-
-router.post('/inbox/:userId', async (req, res) => {
+router.post('/inbox/:userId', ensureAuthenticated, async (req, res) => {
   try {
     const user = await readPostNotifications(User, req);
     res.send(user);

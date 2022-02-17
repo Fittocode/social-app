@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const hbs = require('hbs');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
 const index = require('./routes/index.routes');
 const auth = require('./routes/auth.routes');
@@ -12,7 +13,7 @@ const notifications = require('./routes/notifications.routes');
 
 //middleware config
 const { configParsers, configTemplating } = require('./config/index');
-configParsers(app, cookieParser);
+configParsers(app, bodyParser, cookieParser);
 configTemplating(app, path, hbs);
 
 require('./config/passport')(app);

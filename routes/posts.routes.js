@@ -5,7 +5,7 @@ const User = require('../models/User.models');
 // js functions
 const {
   addLike,
-  addPostNotification,
+  addComment,
   checkIfLoggedUserComment,
   checkIfPostLikedByUser,
   combinePostandLikedByUserArrays,
@@ -156,16 +156,8 @@ router.post('/comment/:postId', ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
   const { content } = req.body;
   try {
-    await Post.findByIdAndUpdate(postId, {
-      $push: {
-        comments: {
-          author: req.user,
-          content: content,
-        },
-      },
-    });
-    await addPostNotification(postId, req, 'commented on');
-    res.redirect(`/view-post/${postId}`);
+    const post = await addComment(postId, content, req);
+    res.status(201).json(post);
   } catch (err) {
     console.log(err.message);
   }
