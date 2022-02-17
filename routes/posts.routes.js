@@ -6,47 +6,35 @@ const User = require('../models/User.models');
 const {
   addLike,
   addPostNotification,
-  checkIfFollowing,
   checkIfLoggedUserComment,
+  checkIfPostLikedByUser,
+  combinePostandLikedByUserArrays,
   ensureAuthenticated,
   findAndPopulateUser,
   findAndPopulatePost,
+  findUsersFollowing,
+  findUsersFollowedPosts,
   removePostNotification,
   returnUnreadNotifications,
+  usersNotFollowed,
 } = require('../config/javascriptFunctions');
 
 // req get newsfeed
 router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
   try {
-    const following = await checkIfFollowing(req);
-    following.push(req.user._id.toString());
-    const otherUsers = await User.find({
-      _id: {
-        $nin: [...following],
-      },
-    });
     const user = await findAndPopulateUser(User, req);
     const unreadNotifications = returnUnreadNotifications(user);
-
-    let usersFollowingArray = await checkIfFollowing(req);
-    usersFollowingPosts = await Post.find({
-      author: { $in: usersFollowingArray },
-    }).populate('author likes');
-
-    let postLikes = [];
-
-    usersFollowingPosts.forEach((post, index) => {
-      post.likes.some((like) => like.username === req.user.username)
-        ? postLikes.push(true)
-        : postLikes.push(false);
-    });
-
-    const postArray = usersFollowingPosts.map(function (item, i) {
-      return {
-        postSchema: usersFollowingPosts[i],
-        loggedUserLiked: postLikes[i],
-      };
-    });
+    const usersFollowing = await findUsersFollowing(req);
+    const otherUsers = await usersNotFollowed(usersFollowing, req);
+    const usersFollowingPosts = await findUsersFollowedPosts(
+      usersFollowing,
+      Post
+    );
+    const postLikes = checkIfPostLikedByUser(usersFollowingPosts, req);
+    const postArray = combinePostandLikedByUserArrays(
+      usersFollowingPosts,
+      postLikes
+    );
 
     res.render('posts/newsfeed', {
       otherUsers: otherUsers,

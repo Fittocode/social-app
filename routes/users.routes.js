@@ -5,7 +5,7 @@ const secureGravUrl = require('../config/gravatar');
 // js functions
 const {
   addFollowNotification,
-  checkIfFollowing,
+  findUsersFollowing,
   findAndPopulateUser,
 } = require('../config/javascriptFunctions');
 
@@ -14,7 +14,7 @@ router.get('/profile/:userId', async (req, res) => {
   try {
     const user = await findAndPopulateUser(User, req);
     // check if following
-    const usersFollowing = await checkIfFollowing(req);
+    const usersFollowing = await findUsersFollowing(req);
     const userFollowedId = await User.findById(userId);
     let followingStatus;
     if (usersFollowing.includes(userFollowedId._id.toString())) {

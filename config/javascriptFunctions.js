@@ -75,7 +75,7 @@ const addFollowNotification = async (userId, req) => {
   });
 };
 
-const checkIfFollowing = async (req) => {
+const findUsersFollowing = async (req) => {
   let usersFollowingArray = [];
   const user = await User.findById(req.user._id).populate({
     path: 'usersFollowed',
@@ -106,6 +106,42 @@ const checkIfLoggedUserComment = (post, req) => {
     }
   }
   return myComment;
+};
+
+const checkIfPostLikedByUser = (usersFollowingPosts, req) => {
+  let postLikes = [];
+  usersFollowingPosts.forEach((post) => {
+    post.likes.some((like) => like.username === req.user.username)
+      ? postLikes.push(true)
+      : postLikes.push(false);
+  });
+  return postLikes;
+};
+
+const usersNotFollowed = async (usersFollowing, req) => {
+  usersFollowing.push(req.user._id.toString());
+  const otherUsers = await User.find({
+    _id: {
+      $nin: [...usersFollowing],
+    },
+  });
+  return otherUsers;
+};
+
+const combinePostandLikedByUserArrays = (usersFollowingPosts, postLikes) => {
+  return usersFollowingPosts.map(function (item, i) {
+    return {
+      postSchema: usersFollowingPosts[i],
+      loggedUserLiked: postLikes[i],
+    };
+  });
+};
+
+const findUsersFollowedPosts = async (usersFollowingArray, Post) => {
+  let usersFollowingPosts = await Post.find({
+    author: { $in: usersFollowingArray },
+  }).populate('author likes');
+  return usersFollowingPosts;
 };
 
 const readPostNotifications = async (User, req) => {
@@ -159,15 +195,19 @@ const findAndPopulatePost = async (Post, postId) => {
 };
 
 module.exports = {
-  addLike,
   addFollowNotification,
+  addLike,
   addPostNotification,
-  checkIfFollowing,
   checkIfLoggedUserComment,
+  checkIfPostLikedByUser,
+  combinePostandLikedByUserArrays,
   ensureAuthenticated,
   findAndPopulatePost,
   findAndPopulateUser,
-  removePostNotification,
+  findUsersFollowing,
+  findUsersFollowedPosts,
   readPostNotifications,
+  removePostNotification,
   returnUnreadNotifications,
+  usersNotFollowed,
 };
