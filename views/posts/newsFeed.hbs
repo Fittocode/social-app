@@ -7,7 +7,29 @@
     </div>
     {{/unless}}
     <div>
-        <a href="/add-post/{{postArray.userLogged._id}}" class="btn btn-success">Add Post</a>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalLong2">
+                    Add Post
+                </button>
+                <div class="modal fade" id="exampleModalLong2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Add Post</h5>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/add-post/{{userLogged._id}}" method="post">
+                                    <div class="form-group"> 
+                                        <label for="content" name="content"></label>
+                                        <textarea type="text" name="content" placeholder="What would you like to say?" class="form-control"></textarea>
+                                    </div>
+                                    <br />
+                                    <button type="submit" class="btn btn-primary">Post</button>
+                                    <a href="/user-profile" class="btn btn-secondary">Cancel</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
     </div>
     <div>
         {{#each (reverseArray postArray)}}
@@ -53,7 +75,7 @@
     </div>
     <br />
      <p>
-        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        <a class="btn btn-success" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
             Find users to follow
         </a>
     </p>

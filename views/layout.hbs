@@ -50,12 +50,14 @@
                       </div>
                     </div>
                   {{else}}
+                  {{#if this.follow}}
                     <div class="card newsfeed-card" onclick="location.href='/profile/{{this.user._id}}';">
                       <div class="card-body">
                         <img class="notification-icon" src="/images/{{this.icon}}" alt=""> 
                         <b>{{this.user.username}}</b> just {{this.action}} you!
                       </div>
                     </div>
+                    {{/if}}
                   {{/if}}
               {{/each}}
             </div>

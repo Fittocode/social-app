@@ -1,8 +1,11 @@
 const router = require('express').Router();
-const { ensureAuthenticated } = require('../config/javascriptFunctions');
 
-router.get('/', ensureAuthenticated, (req, res) => {
-  res.render('index');
+router.get('/', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.redirect('/newsfeed');
+  } else {
+    res.render('index');
+  }
 });
 
 module.exports = router;
