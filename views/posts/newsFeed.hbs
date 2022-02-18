@@ -27,10 +27,9 @@
                         <a href="/profile/{{this._id}}">{{this.username}}</a>
                     </div>
                     {{/each}}
+                    {{else}}
+                        <p>Whoops, looks like you're following everyone!</p>
                 {{/if}}
-                {{#unless otherUsers}}
-                    <p>Whoops, looks like you're following everyone!</p>
-                {{/unless}}
             </div>
     </div>
 </div>

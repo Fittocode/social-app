@@ -73,14 +73,12 @@ const handleFormSubmit = async (event) => {
   }
 };
 const commentList = document.querySelector('.list-group');
-console.log(commentList.querySelectorAll('.container-fluid'));
 const commentForm = document.getElementById('commentForm');
 
 const deleteComment = async (commentList) => {
   const buttons = commentList.querySelectorAll('.removeComment');
   buttons.forEach((button) => {
     button.addEventListener('click', async (event) => {
-      console.log(event.target);
       const response = await fetch(
         `/delete/${event.target.dataset.btnPostId}/${event.target.dataset.btnCommentId}`,
         {

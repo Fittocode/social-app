@@ -76,11 +76,11 @@ router.post('/add-post/:userId', async (req, res) => {
 });
 
 // get req update post page
-router.get(`/update/:postId/`, async (req, res) => {
+router.get(`/update/:postId/`, ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
   try {
     const postDB = await Post.findById(postId);
-    res.render('posts/updatePost', { user: req.user, post: postDB });
+    res.render('posts/updatePost', { userLogged: req.user, post: postDB });
   } catch (err) {
     console.log(err.message);
   }
@@ -102,8 +102,9 @@ router.post('/update/:postId', async (req, res) => {
 router.post('/delete/:postId', async (req, res) => {
   const { postId } = req.params;
   try {
-    await Post.findByIdAndDelete(postId);
     await removePostNotification(postId, req, 'commented on');
+    await removePostNotification(postId, req, 'liked');
+    await Post.findByIdAndDelete(postId);
     res.redirect('/user-profile');
   } catch (err) {
     console.log(err);
@@ -111,7 +112,7 @@ router.post('/delete/:postId', async (req, res) => {
 });
 
 // get req post details, comments, etc
-router.get('/view-post/:postId', async (req, res) => {
+router.get('/view-post/:postId', ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
   try {
     const user = await findAndPopulateUser(User, req);
