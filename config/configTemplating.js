@@ -1,5 +1,4 @@
 const express = require('express');
-const { options } = require('../routes/posts.routes');
 
 const configTemplating = (app, path, hbs) => {
   app.set('views', path.join(__dirname, '..', 'views'));
