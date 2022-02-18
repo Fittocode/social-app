@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const User = require('../models/User.models');
 const {
-  readPostNotifications,
   ensureAuthenticated,
+  readPostNotifications,
 } = require('../config/javascriptFunctions');
 
 router.post('/inbox/:userId', ensureAuthenticated, async (req, res) => {

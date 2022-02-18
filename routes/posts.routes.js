@@ -6,9 +6,10 @@ const User = require('../models/User.models');
 const {
   addLike,
   addComment,
-  checkIfLoggedUserComment,
   checkIfPostLikedByUser,
+  checkIfLoggedUserComment,
   combinePostandLikedByUserArrays,
+  displayFirstWords,
   ensureAuthenticated,
   findAndPopulateUser,
   findAndPopulatePost,
@@ -117,11 +118,13 @@ router.get('/view-post/:postId', ensureAuthenticated, async (req, res) => {
     const user = await findAndPopulateUser(User, req);
     const unreadNotifications = returnUnreadNotifications(user);
     const post = await findAndPopulatePost(Post, postId);
-    checkIfLoggedUserComment(post, req);
 
     let liked = post.likes.find((o) => o.username === req.user.username)
       ? true
       : false;
+
+    displayFirstWords(post.content);
+    checkIfLoggedUserComment(post, req);
 
     res.render('posts/viewPost', {
       userLogged: user,

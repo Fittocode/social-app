@@ -46,12 +46,7 @@
                     <div class="card newsfeed-card" onclick="location.href='/view-post/{{this.post._id}}';">
                       <div class="card-body">
                         <img class="notification-icon" src="/images/{{this.icon}}" alt=""> 
-                        {{#ifCond this.user.username ../userLogged.username}}
-                          You
-                        {{else}}
-                          <b>{{this.user.username}}</b> 
-                        {{/ifCond}}
-                          {{this.action}} your post <i>{{this.post.title}}</i>
+                          <b>{{this.user.username}}</b> {{this.action}} your post <i>{{this.post.title}}</i>
                       </div>
                     </div>
                   {{else}}

@@ -45,6 +45,23 @@ const addComment = async (postId, content, req) => {
   return post;
 };
 
+const checkIfLoggedUserComment = (post, req) => {
+  let myComment;
+  let userComments = post.comments.filter(
+    (comment) => comment.author.username === req.user.username
+  );
+  if (post.comments.length > 0) {
+    if (userComments) {
+      userComments.forEach((comment) => {
+        if (comment.author._id.toString() === req.user._id.toString()) {
+          comment.isLoggedUser = true;
+        }
+      });
+    }
+  }
+  return myComment;
+};
+
 const removeComment = async (postId, commentId, req) => {
   await Post.findByIdAndUpdate(postId, {
     $pull: {
@@ -72,16 +89,18 @@ const addPostNotification = async (postId, req, action) => {
       model: 'Post',
     },
   });
-  await User.findByIdAndUpdate(post.author._id, {
-    $push: {
-      notifications: {
-        user: req.user,
-        action: action,
-        post: post,
-        icon: icon,
+  if (post.author._id.toString() !== req.user._id.toString()) {
+    await User.findByIdAndUpdate(post.author._id, {
+      $push: {
+        notifications: {
+          user: req.user,
+          action: action,
+          post: post,
+          icon: icon,
+        },
       },
-    },
-  });
+    });
+  }
 };
 
 const removePostNotification = async (postId, req, action) => {
@@ -126,23 +145,6 @@ const findUsersFollowing = async (req) => {
   });
 
   return usersFollowingArray;
-};
-
-const checkIfLoggedUserComment = (post, req) => {
-  let myComment;
-  let userComments = post.comments.filter(
-    (comment) => comment.author.username === req.user.username
-  );
-  if (post.comments.length > 0) {
-    if (userComments) {
-      userComments.forEach((comment) => {
-        if (comment.author._id.toString() === req.user._id.toString()) {
-          comment.isLoggedUser = true;
-        }
-      });
-    }
-  }
-  return myComment;
 };
 
 const checkIfPostLikedByUser = (usersFollowingPosts, req) => {
@@ -231,14 +233,22 @@ const findAndPopulatePost = async (Post, postId) => {
   return post;
 };
 
+const displayFirstWords = (content) => {
+  let words = [];
+  console.log(content);
+  for (i = 0; i < content.length; i++) {}
+  return words;
+};
+
 module.exports = {
   addFollowNotification,
   addLike,
   addComment,
   addPostNotification,
-  checkIfLoggedUserComment,
   checkIfPostLikedByUser,
+  checkIfLoggedUserComment,
   combinePostandLikedByUserArrays,
+  displayFirstWords,
   ensureAuthenticated,
   findAndPopulatePost,
   findAndPopulateUser,

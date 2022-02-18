@@ -6,7 +6,8 @@ const heartImage = document.querySelectorAll('.heart-img');
 const notificationNo = document.getElementById('notificationNo');
 
 likeButtons.forEach((button, i) => {
-  button.addEventListener('click', async () => {
+  button.addEventListener('click', async (event) => {
+    event.stopPropagation();
     const response = await fetch(`/like/${button.dataset.postId}`, {
       method: 'POST',
     });
