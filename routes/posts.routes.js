@@ -15,6 +15,7 @@ const {
   findUsersFollowing,
   findUsersFollowedPosts,
   removePostNotification,
+  removeComment,
   returnUnreadNotifications,
   usersNotFollowed,
 } = require('../config/javascriptFunctions');
@@ -167,13 +168,8 @@ router.post('/comment/:postId', ensureAuthenticated, async (req, res) => {
 router.post('/delete/:postId/:commentId/', async (req, res) => {
   const { postId, commentId } = req.params;
   try {
-    await Post.findByIdAndUpdate(postId, {
-      $pull: {
-        comments: { _id: commentId },
-      },
-    });
-    await removePostNotification(postId, req, 'commented on');
-    res.redirect(`/view-post/${postId}`);
+    const post = await removeComment(postId, commentId, req);
+    res.send(post);
   } catch (err) {
     console.log(err);
   }

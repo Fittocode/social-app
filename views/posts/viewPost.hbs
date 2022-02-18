@@ -51,9 +51,7 @@
                                 <div class="d-flex w-100 justify-content-between">
                                     <a href="/profile/{{this.author._id}}" class="comment-name"><p class="mb-1 comment-name">{{this.author.username}}</p></a>
                                     {{#if this.isLoggedUser}}
-                                        <form action="/delete/{{../post._id}}/{{this._id}}" method="post">
-                                            <button type="submit" class="btn x-btn">x</button>
-                                        </form>
+                                        <button type="submit" data-btn-post-id="{{../post._id}}" data-btn-comment-id="{{this._id}}" class="removeComment btn x-btn">x</button>
                                     {{/if}}
                                 </div>
                                 <p class="mb-1">{{this.content}}</p>
@@ -66,3 +64,4 @@
         </div>
     </div>
 </div>
+<script src="/javascript/addDeleteComments.js"></script>
