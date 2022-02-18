@@ -19,7 +19,7 @@ const {
   removeComment,
   returnUnreadNotifications,
   usersNotFollowed,
-} = require('../config/javascriptFunctions');
+} = require('../config/serverJSFunctions');
 
 // req get newsfeed
 router.get('/newsfeed', ensureAuthenticated, async (req, res) => {

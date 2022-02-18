@@ -7,7 +7,7 @@ const {
   addFollowNotification,
   findUsersFollowing,
   findAndPopulateUser,
-} = require('../config/javascriptFunctions');
+} = require('../config/serverJSFunctions');
 
 router.get('/profile/:userId', async (req, res) => {
   const { userId } = req.params;

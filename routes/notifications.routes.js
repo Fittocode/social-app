@@ -3,7 +3,7 @@ const User = require('../models/User.models');
 const {
   ensureAuthenticated,
   readPostNotifications,
-} = require('../config/javascriptFunctions');
+} = require('../config/serverJSFunctions');
 
 router.post('/inbox/:userId', ensureAuthenticated, async (req, res) => {
   try {

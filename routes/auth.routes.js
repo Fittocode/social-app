@@ -10,7 +10,7 @@ const {
   findAndPopulateUser,
   ensureAuthenticated,
   returnUnreadNotifications,
-} = require('../config/javascriptFunctions');
+} = require('../config/serverJSFunctions');
 
 router.get('/user-profile', ensureAuthenticated, async (req, res) => {
   const user = await findAndPopulateUser(User, req);
