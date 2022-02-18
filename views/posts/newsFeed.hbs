@@ -7,11 +7,48 @@
     </div>
     {{/unless}}
     <div>
-        <a href="/add-post/{{userLogged._id}}" class="btn btn-success">Add Post</a>
+        <a href="/add-post/{{postArray.userLogged._id}}" class="btn btn-success">Add Post</a>
     </div>
     <div>
         {{#each (reverseArray postArray)}}
-            {{> postCard }}
+            <div class="card newsfeed-card mt-4" onclick="location.href='/view-post/{{this.postSchema._id}}';">
+                <div class="card-body">
+                    <img src="{{this.postSchema.author.gravatar}}" alt="" class="tiny-gravatar"><a href="/profile/{{this.postSchema.author._id}}">{{this.postSchema.author.username}}</a></p>
+                    <div class="card-text">
+                        <p>{{this.postSchema.content}}</p>
+                        <div class="button-container">
+                            <div class="row">
+                                <div class="col-1">
+                                    <p class="likes-no">{{this.postSchema.likes.length}}</p>
+                                </div>
+                                <div class="col-1 g-0">
+                                    <button data-post-id="{{this.postSchema._id}}" class="likeButton unlike-btn">
+                                        {{#ifLiked this.loggedUserLiked}}
+                                            <img class="heart-img" src="/images/like.png" alt="">
+                                        {{else}}
+                                            <img class="heart-img" src="/images/tiny-empty-heart.png" alt="">
+                                        {{/ifLiked}}
+                                    </button>
+                                </div>
+                                <div class="col-1">
+                                    <p class="comments-no">{{this.postSchema.comments.length}}</p>
+                                </div>
+                                <div class="col-1 g-0">
+                                    <button class="unlike-btn" type="submit">
+                                        <img class="comment-img" src="/images/notification.png" alt="">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{#ifCond this.postSchema.author._id ../userLogged._id}}
+                    <a href="/update/{{this.postSchema._id}}" class="btn btn-info">Update</a>
+                        <form action="/delete/{{this.postSchema._id}}" method='post' class="d-inline">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    {{/ifCond}}
+                </div>
+            </div>
         {{/each}}
     </div>
     <br />

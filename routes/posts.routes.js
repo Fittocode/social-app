@@ -41,8 +41,8 @@ router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
     res.render('posts/newsfeed', {
       otherUsers: otherUsers,
       userLogged: user,
-      notifications: unreadNotifications.length,
       postArray: postArray,
+      notifications: unreadNotifications.length,
       currentPage: req.url,
     });
   } catch (err) {
@@ -69,7 +69,7 @@ router.post('/add-post/:userId', async (req, res) => {
     await User.findByIdAndUpdate(userId, {
       $push: { posts: userPost },
     });
-    res.redirect('/user-profile');
+    res.redirect('/newsfeed');
   } catch (err) {
     console.log(err.message);
   }
@@ -105,7 +105,7 @@ router.post('/delete/:postId', async (req, res) => {
     await removePostNotification(postId, req, 'commented on');
     await removePostNotification(postId, req, 'liked');
     await Post.findByIdAndDelete(postId);
-    res.redirect('/user-profile');
+    res.redirect('/newsfeed');
   } catch (err) {
     console.log(err);
   }
@@ -123,7 +123,7 @@ router.get('/view-post/:postId', ensureAuthenticated, async (req, res) => {
       ? true
       : false;
 
-    displayFirstWords(post.content);
+    // displayFirstWords(post.content);
     checkIfLoggedUserComment(post, req);
 
     res.render('posts/viewPost', {

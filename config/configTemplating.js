@@ -7,7 +7,7 @@ const configTemplating = (app, path, hbs) => {
   hbs.registerPartials(path.join(__dirname, '..', '/views/partials'));
   hbs.registerHelper('reverseArray', (array) => array.reverse());
   hbs.registerHelper('ifCond', function (v1, v2, options) {
-    if (v1 === v2) {
+    if (v1.toString() === v2.toString()) {
       return options.fn(this);
     } else {
       return options.inverse(this);
