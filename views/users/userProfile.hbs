@@ -50,8 +50,8 @@
     {{#each posts}}
     <div class="card newsfeed-card mt-4" onclick="location.href='/view-post/{{this._id}}';">
         <div class="card-body">
-            <h3 class="card-title">{{this.title}}</h3>
             <div class="card-text mb-2">
+                <img src="{{../userLogged.gravatar}}" alt="" class="tiny-gravatar"><a href="/profile/{{../userLogged._id}}">{{../userLogged.username}}</a></p>
                 <p>{{this.content}}</p>
                 <div class="button-container">
                     <div class="row">

@@ -58,11 +58,10 @@ router.get('/add-post/:userId', (req, res) => {
 // post req add post
 router.post('/add-post/:userId', async (req, res) => {
   const { userId } = req.params;
-  const { title, content } = req.body;
+  const { content } = req.body;
 
   try {
     const userPost = await Post.create({
-      title,
       author: req.user,
       content,
     });
@@ -89,9 +88,9 @@ router.get(`/update/:postId/`, ensureAuthenticated, async (req, res) => {
 // post req update post
 router.post('/update/:postId', async (req, res) => {
   const { postId } = req.params;
-  const { title, content } = req.body;
+  const { content } = req.body;
   try {
-    await Post.findByIdAndUpdate(postId, { title, content });
+    await Post.findByIdAndUpdate(postId, { content });
     res.redirect('/user-profile');
   } catch (err) {
     console.log(err.message);
