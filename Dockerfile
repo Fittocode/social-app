@@ -1,12 +1,16 @@
-FROM node:12.16.3
+# syntax=docker/dockerfile:1
+
+FROM node:12.18.1
+
+ENV NODE_ENV=production
 
 WORKDIR /app
 
+COPY ["package.json", "package-lock.json", "./"]
+
 ENV PORT 80
 
-COPY package.json ./
-
-RUN npm install
+RUN npm install --production
 
 COPY . .
 
