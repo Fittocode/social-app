@@ -4,10 +4,10 @@ WORKDIR /app
 
 ENV PORT 80
 
-COPY package.json /app
+COPY package.json ./
 
 RUN npm install
 
-COPY . /app
+COPY . .
 
-CMD ["node", "app.js"]
+CMD ["npm", "start"]
