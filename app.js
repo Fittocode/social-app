@@ -23,6 +23,9 @@ require('./config/passport')(app);
 const connectDB = require('./db/index');
 connectDB();
 
+app.set('views', __dirname + '/views');
+app.use(express.static(path.join(__dirname, './app')));
+
 // Routes
 app.use('/', index);
 

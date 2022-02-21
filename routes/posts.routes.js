@@ -80,7 +80,10 @@ router.get(`/update/:postId/`, ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
   try {
     const postDB = await Post.findById(postId);
-    res.render('posts/updatePost', { userLogged: req.user, post: postDB });
+    res.render('posts/updatePost', {
+      userLogged: req.user,
+      post: postDB,
+    });
   } catch (err) {
     console.log(err.message);
   }
