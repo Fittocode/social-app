@@ -1,3 +1,4 @@
+require('dotenv/config');
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -35,9 +36,9 @@ app.use('/', notifications);
 
 require('./error-handling')(app);
 
-const PORT = 3000;
+const PORT = process.env.PORT || 8080;
 
-// local host 3000 listening
+// local host 8080 listening
 app.listen(PORT, () => {
   console.log(`listening on port localhost:${PORT}...`);
 });
