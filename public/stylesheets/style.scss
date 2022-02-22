@@ -100,11 +100,7 @@ a {
 }
 
 .button-container {
-  width: 300px;
-}
-
-.col-2 {
-  margin-right: 0.5rem;
+  width: 100px;
 }
 
 .col-4 {
@@ -133,8 +129,18 @@ a {
   margin-right: 1px;
 }
 
+.col-1 {
+  margin-right: 0.2rem;
+}
+
+.col-2 {
+  margin-right: 0.4rem;
+}
+
 .unlike-btn {
   border: none;
+  display: block;
+  margin-bottom: 1rem;
   background-color: transparent;
 }
 
