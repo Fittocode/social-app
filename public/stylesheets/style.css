@@ -1384,21 +1384,6 @@
   width: 95%;
 }
 
-@media (min-width: 576px) {
-  .login-width {
-    width: 30%;
-  }
-  .viewPost-width {
-    width: 60%;
-  }
-}
-
-@media (min-width: 768px) {
-  .viewPost-width {
-    width: 60%;
-  }
-}
-
 body {
   background-color: #f1f2f5;
 }
@@ -1410,10 +1395,6 @@ body {
 
 nav {
   padding-right: 2rem;
-}
-
-nav {
-  padding-left: 1rem;
 }
 
 .container-md {
@@ -1455,11 +1436,19 @@ a {
 }
 
 .button-container {
-  width: 100px;
+  width: 110px;
+}
+
+.profile-following-container {
+  width: 300px;
 }
 
 .col-4 {
   margin-right: 0rem;
+}
+
+.col-8 {
+  width: 90%;
 }
 
 .btn-info {
@@ -1485,10 +1474,12 @@ a {
 }
 
 .col-1 {
+  margin-left: 0.2rem;
   margin-right: 0.2rem;
 }
 
 .col-2 {
+  margin-left: 0.2rem;
   margin-right: 0.4rem;
 }
 
@@ -1528,16 +1519,6 @@ a {
   border-radius: 50%;
 }
 
-.profile-gravatar {
-  width: 80px;
-}
-
-@media (min-width: 768px) {
-  .profile-gravatar {
-    width: 140px;
-  }
-}
-
 .tiny-gravatar,
 .comment-tiny-gravatar {
   margin-right: 0.5rem;
@@ -1559,5 +1540,42 @@ a {
   margin: auto;
   -webkit-filter: brightness(70%);
           filter: brightness(70%);
+}
+
+.profile-gravatar {
+  width: 80px;
+}
+
+nav {
+  padding-left: 1rem;
+}
+
+.col-8 {
+  width: 80%;
+}
+
+@media (min-width: 576px) {
+  .login-width,
+  .signup-width {
+    width: 30%;
+  }
+  .viewPost-width {
+    width: 60%;
+  }
+  .col-8 {
+    width: 75%;
+  }
+}
+
+@media (min-width: 768px) {
+  .viewPost-width {
+    width: 60%;
+  }
+  .profile-gravatar {
+    width: 140px;
+  }
+  .col-8 {
+    width: 80%;
+  }
 }
 /*# sourceMappingURL=style.css.map */

@@ -8,11 +8,11 @@
             <p>
                 <div class="button-container">
                     <div class="row">
-                        <div class="col-1">
+                        <div class="col-1 d-flex justify-content-center">
                             <p class="likes-no">{{post.likes.length}}</p>
                         </div>
-                        <div class="col-2 g-0">
-                            <button data-post-id="{{post._id}}" class="likeButton unlike-btn">
+                        <div class="col-2 d-flex justify-content-center">
+                            <button data-post-id="{{post._id}}" class="unlike-btn">
                                 {{#if status}}
                                     <img class="heart-img" src="/images/like.png" alt="">
                                     {{else}}
@@ -20,7 +20,7 @@
                                 {{/if}}
                             </button>
                         </div>
-                        <div class="col-8 g-0">
+                        <div class="col-8">
                         </div>
                     </div>
                 </div>
