@@ -1,4 +1,4 @@
-<div class="container-md">
+<div class="container-md viewPost-width">
     <div class="card mt-4">
         <div class="card-body" style="padding-bottom: 0px">
                 <img src="{{post.author.gravatar}}" alt="" class="tiny-gravatar"><a href="/profile/{{post.author._id}}">{{post.author.username}}</a></p>
@@ -42,9 +42,7 @@
                 {{#each post.comments}}
                 <div class="container-fluid">
                     <div class="row no-gutters">
-                        <div class="col-1">
-                            <img src="{{this.author.gravatar}}" alt="" class="tiny-gravatar">
-                        </div>
+                        <img src="{{this.author.gravatar}}" alt="" class="comment-tiny-gravatar">
                         <div class="col-8 g-0">
                             <div class="list-group grey-comment-box">
                                 <div class="d-flex w-100 justify-content-between">

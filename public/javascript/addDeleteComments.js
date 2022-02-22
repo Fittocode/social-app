@@ -4,9 +4,7 @@ const handlebars = (commentData, responseData) => {
   return `
         <div class="container-fluid">
           <div class="row no-gutters">
-              <div class="col-1">
-                  <img src='${commentData.author.gravatar}' alt="" class="tiny-gravatar">
-              </div>
+              <img src='${commentData.author.gravatar}' alt="" class="comment-tiny-gravatar">
               <div class="col-8 g-0">
                   <div class="list-group grey-comment-box">
                       <div class="d-flex w-100 justify-content-between">
@@ -62,12 +60,18 @@ const handleFormSubmit = async (event) => {
     const responseData = await postFormDataAsJson({ url, formData });
 
     const commentData = responseData.comments[responseData.comments.length - 1];
+    console.log(commentData);
 
-    commentList.insertAdjacentHTML(
-      'beforeend',
-      handlebars(commentData, responseData)
-    );
-    deleteComment(commentList);
+    if (commentData.content !== '') {
+      commentList.insertAdjacentHTML(
+        'beforeend',
+        handlebars(commentData, responseData)
+      );
+    }
+    // clear textbox
+    document.querySelector('#content').value = '';
+    // create delete comment button
+    deleteCommentButton(commentList);
   } catch (err) {
     console.log(err.message);
   }
@@ -75,7 +79,7 @@ const handleFormSubmit = async (event) => {
 const commentList = document.querySelector('.list-group');
 const commentForm = document.getElementById('commentForm');
 
-const deleteComment = async (commentList) => {
+const deleteCommentButton = async (commentList) => {
   const buttons = commentList.querySelectorAll('.removeComment');
   buttons.forEach((button) => {
     button.addEventListener('click', async (event) => {
@@ -96,4 +100,4 @@ const deleteComment = async (commentList) => {
 // submit comment to dom, affecting client side 'handlebars' code
 commentForm.addEventListener('submit', handleFormSubmit);
 // delete comments, affecting server side viewPost hbs code
-deleteComment(commentList);
+deleteCommentButton(commentList);

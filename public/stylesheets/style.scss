@@ -1,0 +1,202 @@
+@import '../../node_modules/bootstrap/scss/bootstrap';
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px,
+);
+
+$container-max-widths: (
+  xs: 100px,
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1320px,
+);
+
+.login-width,
+.signup-width {
+  width: 80%;
+}
+
+.viewPost-width {
+  width: 95%;
+}
+
+@include media-breakpoint-up(sm) {
+  .login-width {
+    width: 30%;
+  }
+  .viewPost-width {
+    width: 60%;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .viewPost-width {
+    width: 60%;
+  }
+}
+
+body {
+  background-color: #f1f2f5;
+}
+
+.form-control,
+#content {
+  background-color: #eff2f5;
+}
+
+nav {
+  padding-right: 2rem;
+}
+
+@include media-breakpoint-up(xs) {
+  nav {
+    padding-left: 1rem;
+  }
+}
+
+.container-md {
+  margin-bottom: 4rem;
+}
+
+.form-padding {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.list-group {
+  border-top: none;
+  padding: 1rem 1rem 0 1rem;
+}
+
+.grey-comment-box {
+  padding: 0rem 1rem 0.5rem 1rem;
+  margin-bottom: 1rem;
+  background-color: #eff2f5;
+}
+
+.x-btn {
+  color: #616161;
+}
+
+.comment-name {
+  font-size: 1rem;
+  margin-top: 5px;
+}
+
+.newsfeed-card:hover {
+  cursor: pointer;
+  background-color: rgb(249, 249, 249);
+}
+
+a {
+  text-decoration: none;
+}
+
+.button-container {
+  width: 300px;
+}
+
+.col-2 {
+  margin-right: 0.5rem;
+}
+
+.col-4 {
+  margin-right: 0rem;
+}
+
+.btn-info {
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+  color: white;
+}
+
+.btn-info:hover {
+  background-color: #108698;
+  border-color: #108698;
+  color: white;
+}
+
+.likes-no,
+.comments-no {
+  padding-top: 5px;
+  font-size: 1.2rem;
+}
+
+.comments-no {
+  margin-right: 1px;
+}
+
+.unlike-btn {
+  border: none;
+  background-color: transparent;
+}
+
+.heart-img,
+.comment-img {
+  margin-top: 5px;
+  border: none;
+  height: 25px;
+  width: 25px;
+}
+
+.comment-box {
+  margin-top: -2rem;
+}
+
+.btn-size {
+  height: 35px;
+}
+
+.badge {
+  margin-top: 4px;
+}
+
+.notification-icon {
+  height: 20px;
+  width: 20px;
+}
+
+.profile-gravatar {
+  border-radius: 50%;
+}
+
+@include media-breakpoint-up(xs) {
+  .profile-gravatar {
+    width: 80px;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .profile-gravatar {
+    width: 140px;
+  }
+}
+
+.tiny-gravatar,
+.comment-tiny-gravatar {
+  margin-right: 0.5rem;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.comment-tiny-gravatar {
+  width: 60px;
+}
+
+.sr-only,
+.carousel-control-next-icon {
+  color: black;
+}
+
+.carousel-inner img {
+  margin: auto;
+  filter: brightness(70%);
+}

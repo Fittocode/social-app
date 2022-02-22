@@ -20,9 +20,10 @@ const {
   returnUnreadNotifications,
   usersNotFollowed,
 } = require('../config/serverJSFunctions');
+const { rawListeners } = require('../models/User.models');
 
 // req get newsfeed
-router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
+router.get('/newsFeed', ensureAuthenticated, async (req, res) => {
   try {
     const user = await findAndPopulateUser(User, req);
     const unreadNotifications = returnUnreadNotifications(user);
@@ -38,7 +39,7 @@ router.get('/newsfeed', ensureAuthenticated, async (req, res) => {
       postLikes
     );
 
-    res.render('posts/newsfeed', {
+    res.render('posts/newsFeed', {
       otherUsers: otherUsers,
       userLogged: user,
       postArray: postArray,
@@ -163,8 +164,10 @@ router.post('/comment/:postId', ensureAuthenticated, async (req, res) => {
   const { postId } = req.params;
   const { content } = req.body;
   try {
-    const post = await addComment(postId, content, req);
-    res.status(201).json(post);
+    if (content !== '') {
+      const post = await addComment(postId, content, req);
+      res.status(201).json(post);
+    }
   } catch (err) {
     console.log(err.message);
   }
