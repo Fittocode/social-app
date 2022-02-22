@@ -1,4 +1,4 @@
-# social-app
+# Full Stack Social Media App using Express, Node, and MongoDB
 
 ## Introduction
 
@@ -11,5 +11,4 @@ To run this project, install it locally using npm then use npm start to run the 
 ```
 $ npm install
 $ npm start
-
 ```
